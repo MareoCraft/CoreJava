@@ -1,0 +1,16 @@
+{
+  "name": "Core Java Mastery",
+  "short_name": "Core Java",
+  "description": "An offline-friendly Core Java learning companion by Ravishankar Sir.",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "any",
+  "theme_color": "#f89820",
+  "background_color": "#f8fafc",
+  "icons": [
+    { "src": "./Public/icons/icon-192.png", "sizes": "192x192", "type": "image/png" },
+    { "src": "./Public/icons/icon-512.png", "sizes": "512x512", "type": "image/png" },
+    { "src": "./Public/icons/icon-maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ]
+}
