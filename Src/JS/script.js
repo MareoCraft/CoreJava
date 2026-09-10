@@ -1,5 +1,6 @@
 // ==================== COMPLETE DATA ====================
 import topicsData from './topicData.js';
+import { trackEvent } from './firebase.js';
 
 // ============ STATE MANAGEMENT ============
 let state = {
@@ -116,6 +117,7 @@ function navigateToTopic(topicId) {
     if (!topic) return;
 
     state.currentTopic = topicId;
+    trackEvent('view_topic', { topic_id: topicId, topic_name: topic.title });
     state.recentTopics = [topicId, ...state.recentTopics.filter(id => id !== topicId)].slice(0, 5);
     saveState();
 
@@ -201,6 +203,7 @@ function toggleComplete(topicId) {
         showToast('Marked as incomplete', 'info');
     } else {
         state.completedTopics.add(topicId);
+        trackEvent('complete_topic', { topic_id: topicId });
         showToast('Topic completed! 🎉', 'success');
     }
     saveState();
@@ -288,6 +291,8 @@ function updateDashboard() {
 function handleSearch(query) {
     const resultsDiv = document.getElementById('search-results');
     const q = query.toLowerCase().trim();
+
+    if (q.length >= 2) trackEvent('search_topic', { search_term: q });
 
     if (q.length < 2) {
         resultsDiv.classList.remove('active');
@@ -459,6 +464,7 @@ window.toggleBookmark = toggleBookmark;
 window.showBookmarks = showBookmarks;
 window.toggleTheme = toggleTheme;
 window.copyCode = copyCode;
+window.showToast = showToast;
 window.toggleSidebar = toggleSidebar;
 window.toggleMobileSearch = toggleMobileSearch;
 

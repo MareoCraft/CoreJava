@@ -65,6 +65,23 @@
                     onclick="showDashboard(); toggleSidebar(false); return false;"><i class="fa-solid fa-house-chimney" aria-hidden="true"></i></a>
             </div>
             <nav class="sidebar-nav" id="sidebar-nav"></nav>
+            <section class="sidebar-profile" id="sidebar-profile" aria-label="Account">
+                <button class="google-sign-in" id="googleSignInButton" type="button">
+                    <img src="./Public/Images/google.png" width="20" height="20" alt="Google Icon"><span>Continue with Google</span>
+                </button>
+                <button class="profile-summary" id="profileSummary" type="button" aria-expanded="false" aria-controls="profileDropdown" hidden>
+                    <img id="profilePhoto" src="./Public/Images/java.png" alt="" referrerpolicy="no-referrer">
+                    <span class="profile-text"><strong id="profileName"></strong><small id="profileEmail"></small></span>
+                    <i class="fas fa-chevron-up" aria-hidden="true"></i>
+                </button>
+                <div class="profile-dropdown" id="profileDropdown" hidden>
+                    <div class="profile-dropdown-header">
+                        <img id="dropdownPhoto" src="./Public/Images/java.png" alt="" referrerpolicy="no-referrer">
+                        <div class="profile-dropdown-details"><strong id="dropdownName"></strong><small id="dropdownEmail"></small></div>
+                    </div>
+                    <button id="googleSignOutButton" type="button"><i class="fas fa-sign-out-alt" aria-hidden="true"></i> Sign Out</button>
+                </div>
+            </section>
         </aside>
         <main class="content" id="main-content">
             <div class="dashboard-view" id="dashboard-view">

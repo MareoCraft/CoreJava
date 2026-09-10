@@ -1,9 +1,10 @@
 /* Increment for a cache-schema change; app code and course data update automatically. */
-const CACHE_VERSION = 'core-java-mastery-v3';
+const CACHE_VERSION = 'core-java-mastery-v4';
 const STATIC_CACHE = `${CACHE_VERSION}-static`;
 const RUNTIME_CACHE = `${CACHE_VERSION}-runtime`;
 const APP_SHELL = [
-  './', './index.html', './offline.html', './manifest.json', './Src/CSS/style.css', './Src/JS/script.js', './Src/JS/pwa.js', './Src/JS/topicData.js', './Public/Images/java.png', './icons/icon-192.png', './icons/icon-512.png', './icons/icon-maskable-512.png'
+  './', './index.html', './offline.html', './manifest.json', './Src/CSS/style.css', './Src/JS/script.js', './Src/JS/pwa.js', './Src/JS/firebase.js', './Src/JS/topicData.js', './Public/Images/java.png', './icons/icon-192.png', './icons/icon-512.png', './icons/icon-maskable-512.png',
+  'https://www.gstatic.com/firebasejs/11.0.2/firebase-app.js', 'https://www.gstatic.com/firebasejs/11.0.2/firebase-auth.js', 'https://www.gstatic.com/firebasejs/11.0.2/firebase-analytics.js'
 ];
 self.addEventListener('install', event => { event.waitUntil(caches.open(STATIC_CACHE).then(cache => cache.addAll(APP_SHELL))); self.skipWaiting(); });
 self.addEventListener('activate', event => { event.waitUntil(caches.keys().then(keys => Promise.all(keys.filter(key => key.startsWith('core-java-mastery-') && ![STATIC_CACHE, RUNTIME_CACHE].includes(key)).map(key => caches.delete(key)))).then(() => self.clients.claim())); });
