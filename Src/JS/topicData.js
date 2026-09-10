@@ -5430,6 +5430,167 @@ const topicsData = [
       </code></pre>
     </div>
   `
+  },
+
+  {
+    id: 'custom-thread-extending',
+    title: 'Custom Thread by Extending Thread',
+    icon: 'fas fa-code-branch',
+    category: 'Multithreading',
+    content: `
+    <h2>Creating a custom thread by extending java.lang.Thread class</h2>
+    <div class="code-block">
+      <div class="code-header"><span class="code-filename">CustomThread.java</span><button class="copy-btn" onclick="copyCode(this)"><i class="fas fa-copy"></i></button></div>
+      <pre><code>
+        <span class="hl-keyword">package</span> com.ravi.basic;
+        <span class="hl-keyword">class</span> <span class="hl-type">UserThread</span> <span class="hl-keyword">extends</span> <span class="hl-type">Thread</span> {
+            <span class="hl-keyword">@Override</span>
+            <span class="hl-keyword">public</span> <span class="hl-keyword">void</span> <span class="hl-method">run</span>() {
+                <span class="hl-comment">//The task which we want to perform using custom thread</span>
+                <span class="hl-type">IO</span>.println(<span class="hl-string">"Child thread is running"</span>);
+            }
+        }
+        <span class="hl-keyword">public</span> <span class="hl-keyword">class</span> <span class="hl-type">CustomThread</span> {
+            <span class="hl-keyword">public</span> <span class="hl-keyword">static</span> <span class="hl-keyword">void</span> <span class="hl-method">main</span>(String[] args) {
+                <span class="hl-type">IO</span>.println(<span class="hl-string">"Main thread started!!!"</span>);
+                <span class="hl-type">UserThread</span> ut = <span class="hl-keyword">new</span> <span class="hl-type">UserThread</span>();
+                ut.<span class="hl-method">start</span>();
+                <span class="hl-type">IO</span>.println(<span class="hl-string">"Main thread ended!!!"</span>);
+            }
+        }
+      </code></pre>
+    </div>
+    <p>In the above program, we have two threads, <strong>main thread</strong> which is responsible to execute main method and <strong>Thread-0</strong> thread which is responsible to execute run() method. Here processor is having two threads so, processor can easily switch from one thread (main thread) to child thread (Thread-0 thread).</p>
+    <div class="info-box note">
+      <i class="fas fa-info-circle"></i>
+      <div>
+        <div class="info-title">Note:</div>
+        <p>In entire Multithreading concept <strong>start()</strong> is the only method which is responsible to create a new thread.</p>
+      </div>
+    </div>
+    <h3>public void start()</h3>
+    <ul>
+      <li>It is a predefined non-static method of Thread class.</li>
+      <li>Internally start() method performs the following two tasks:
+        <ol>
+          <li>a) It will make a request to the O.S to assign a new thread in a separate stack memory for concurrent execution.</li>
+          <li>b) It will internally call the run() method on the current object.</li>
+        </ol>
+      </li>
+    </ul>
+
+    <h3>public final boolean isAlive()</h3>
+    <p>As we know when we call start() method then a new thread will be created in a separate Stack Memory. Thread class has provided a predefined final non-static method called isAlive(), return type is boolean. This method is used to verify whether a thread has started or not OR the thread is alive or not. [If the thread started and completed its assigned task then It is NOT alive]</p>
+    <p>If we use isAlive() method before the start method then it will return false because Thread has not started yet, on the other hand if we use isAlive() method, after start() method then it will return true but thread should be in running mode.</p>
+    <p>In java, We cannot re-start a thread, If we try to re-start then it will generate a runtime exception i.e <code>java.lang.IllegalThreadStateException</code>.</p>
+
+    <div class="code-block">
+      <div class="code-header"><span class="code-filename">IsAliveDemo.java</span><button class="copy-btn" onclick="copyCode(this)"><i class="fas fa-copy"></i></button></div>
+      <pre><code>
+        <span class="hl-keyword">package</span> com.ravi.basic;
+        <span class="hl-keyword">class</span> <span class="hl-type">Test</span> <span class="hl-keyword">extends</span> <span class="hl-type">Thread</span> {
+            <span class="hl-keyword">@Override</span>
+            <span class="hl-keyword">public</span> <span class="hl-keyword">void</span> <span class="hl-method">run</span>() {
+                <span class="hl-type">IO</span>.println(<span class="hl-string">"Child thread is running"</span>);
+                <span class="hl-type">IO</span>.println(<span class="hl-string">"It is running in a separate Stack memory"</span>);
+            }
+        }
+        <span class="hl-keyword">public</span> <span class="hl-keyword">class</span> <span class="hl-type">IsAliveDemo</span> {
+            <span class="hl-keyword">public</span> <span class="hl-keyword">static</span> <span class="hl-keyword">void</span> <span class="hl-method">main</span>(String[] args) {
+                <span class="hl-type">IO</span>.println(<span class="hl-string">"Main Thread started!!!"</span>);
+                <span class="hl-type">Test</span> t1 = <span class="hl-keyword">new</span> <span class="hl-type">Test</span>();
+                t1.<span class="hl-method">start</span>();
+                <span class="hl-type">IO</span>.println(<span class="hl-string">"Is Child thread Alive ? "</span>+t1.<span class="hl-method">isAlive</span>());  <span class="hl-comment">// true</span>
+                t1.<span class="hl-method">start</span>();  <span class="hl-comment">//java.lang.IllegalThreadStateException</span>
+                <span class="hl-type">IO</span>.println(<span class="hl-string">"Main Thread ended!!!"</span>);
+            }
+        }
+      </code></pre>
+    </div>
+
+    <h3>Exception in main thread</h3>
+    <div class="code-block">
+      <div class="code-header"><span class="code-filename">ExceptionDemo.java</span><button class="copy-btn" onclick="copyCode(this)"><i class="fas fa-copy"></i></button></div>
+      <pre><code>
+        <span class="hl-keyword">package</span> com.ravi.basic;
+        <span class="hl-keyword">class</span> <span class="hl-type">Foo</span> <span class="hl-keyword">extends</span> <span class="hl-type">Thread</span> {
+            <span class="hl-keyword">@Override</span>
+            <span class="hl-keyword">public</span> <span class="hl-keyword">void</span> <span class="hl-method">run</span>() {
+                String name = <span class="hl-type">Thread</span>.<span class="hl-method">currentThread</span>().<span class="hl-method">getName</span>();
+                <span class="hl-type">IO</span>.println(<span class="hl-string">"Running thread name is :"</span>+name);
+            }
+        }
+        <span class="hl-keyword">public</span> <span class="hl-keyword">class</span> <span class="hl-type">ExceptionDemo</span> {
+            <span class="hl-keyword">public</span> <span class="hl-keyword">static</span> <span class="hl-keyword">void</span> <span class="hl-method">main</span>(String[] args) {
+                <span class="hl-type">IO</span>.println(<span class="hl-string">"Main thread started"</span>);
+                String name = <span class="hl-type">Thread</span>.<span class="hl-method">currentThread</span>().<span class="hl-method">getName</span>();
+                <span class="hl-type">IO</span>.println(<span class="hl-string">"Current thread name is :"</span>+name);
+                <span class="hl-type">Foo</span> f1 = <span class="hl-keyword">new</span> <span class="hl-type">Foo</span>();
+                f1.<span class="hl-method">start</span>();
+                <span class="hl-type">IO</span>.println(<span class="hl-number">10</span>/<span class="hl-number">0</span>);
+                <span class="hl-type">IO</span>.println(<span class="hl-string">"Main thread ended"</span>);
+            }
+        }
+      </code></pre>
+    </div>
+    <div class="info-box note">
+      <i class="fas fa-info-circle"></i>
+      <div>
+        <div class="info-title">Note:</div>
+        <p>Here main thread is interrupted due to ArithmeticException but still child thread will be executed because child thread is executing with separate Stack.</p>
+      </div>
+    </div>
+
+    <div class="code-block">
+      <div class="code-header"><span class="code-filename">ThreadLoop.java</span><button class="copy-btn" onclick="copyCode(this)"><i class="fas fa-copy"></i></button></div>
+      <pre><code>
+        <span class="hl-keyword">package</span> com.ravi.basic;
+        <span class="hl-keyword">class</span> <span class="hl-type">Sample</span> <span class="hl-keyword">extends</span> <span class="hl-type">Thread</span> {
+            <span class="hl-keyword">@Override</span>
+            <span class="hl-keyword">public</span> <span class="hl-keyword">void</span> <span class="hl-method">run</span>() {
+                String name = <span class="hl-type">Thread</span>.<span class="hl-method">currentThread</span>().<span class="hl-method">getName</span>();
+                <span class="hl-keyword">for</span>(<span class="hl-type">int</span> i=<span class="hl-number">1</span>; i&lt;=<span class="hl-number">10</span>; i++) {
+                    <span class="hl-type">IO</span>.println(i+<span class="hl-string">" by "</span>+name+<span class="hl-string">" thread"</span>);
+                }
+            }
+        }
+        <span class="hl-keyword">public</span> <span class="hl-keyword">class</span> <span class="hl-type">ThreadLoop</span> {
+            <span class="hl-keyword">public</span> <span class="hl-keyword">static</span> <span class="hl-keyword">void</span> <span class="hl-method">main</span>(String[] args) {
+                <span class="hl-type">Sample</span> s = <span class="hl-keyword">new</span> <span class="hl-type">Sample</span>();
+                s.<span class="hl-method">start</span>();
+                String name = <span class="hl-type">Thread</span>.<span class="hl-method">currentThread</span>().<span class="hl-method">getName</span>();
+                <span class="hl-keyword">for</span>(<span class="hl-type">int</span> i=<span class="hl-number">1</span>; i&lt;=<span class="hl-number">10</span>; i++) {
+                    <span class="hl-type">IO</span>.println(i+<span class="hl-string">" by "</span>+name+<span class="hl-string">" thread!!!"</span>);
+                }
+                <span class="hl-type">int</span> i=<span class="hl-number">1</span>;
+                <span class="hl-keyword">do</span> {
+                    <span class="hl-type">IO</span>.println(<span class="hl-string">"Java Multithreading "</span>);
+                    i++;
+                } <span class="hl-keyword">while</span>(i&lt;=<span class="hl-number">10</span>);
+            }
+        }
+      </code></pre>
+    </div>
+
+    <div class="info-box note">
+      <i class="fas fa-info-circle"></i>
+      <div>
+        <div class="info-title">Note:</div>
+        <p>Here processor is frequently switching from main thread to Thread-0 thread so output is un-predictable. We have something called <strong>Thread Scheduler</strong> which is responsible to schedule the thread that means it is scheduler who will decide which thread will get the processor time.</p>
+      </div>
+    </div>
+
+    <h3>Can a running thread be suspended by Thread Scheduler?</h3>
+    <p>Yes, because thread scheduler is responsible to schedule the Thread so, all the threads will get the processor time.</p>
+
+    <div class="info-box note">
+      <i class="fas fa-info-circle"></i>
+      <div>
+        <div class="info-title">Note:</div>
+        <p>The Currently executing instruction of a running thread is stored in <strong>PC register</strong>.</p>
+      </div>
+    </div>
+  `
   }
 ];
 

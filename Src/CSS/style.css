@@ -21,7 +21,7 @@
     --shadow-lg: 0 8px 30px rgba(0, 0, 0, 0.12);
     --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.05);
     --sidebar-width: 320px;
-    --navbar-height: 70px;
+    --navbar-height: 50px;
     --border-radius: 12px;
     --transition: all 0.3s ease;
 }
@@ -41,6 +41,10 @@
     padding: 0;
     box-sizing: border-box;
     scroll-behavior: smooth;
+}
+
+iframe {
+    border: none;
 }
 
 html {
