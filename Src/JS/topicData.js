@@ -276,7 +276,7 @@ const topicsData = [
           <tr><th>Type</th><th>Size</th><th>Range</th></tr>
           <tr><td>byte</td><td>8 bits</td><td>-128 to 127</td></tr>
           <tr><td>short</td><td>16 bits</td><td>-32,768 to 32,767</td></tr>
-          <tr><td>int</td><td>32 bits</td><td>−2.15e9 to 2.15e9**</td></tr>
+          <tr><td>int</td><td>32 bits</td><td>~−2.15e9 to 2.15e9**</td></tr>
           <tr><td>long</td><td>64 bits</td><td>	~−9.22e18 to 9.22e18</td></tr>
           <tr><td>float</td><td>32 bits</td><td>~3.4e-38 to 3.4e+38</td></tr>
           <tr><td>double</td><td>64 bits</td><td>~1.7e-308 to 1.7e+308</td></tr>
