@@ -6006,6 +6006,263 @@ const topicsData = [
       </div>
     </div>
   `
+  },
+
+  {
+    id: 'thread-name-setget',
+    title: 'How to Set and Get the Name of the Thread',
+    icon: 'fas fa-tag',
+    category: 'Multithreading',
+    content: `
+    <h2>How to set and get the name of the Thread</h2>
+    <p>Whenever we create a userdefined Thread in java then by default JVM assigns the name of thread is <strong>Thread-0, Thread-1, Thread-2</strong> and so on. If a user wants to assign some user defined name of the Thread, then Thread class has provided a predefined method called <strong>setName(String name)</strong> to set the name of the Thread. On the other hand we want to get the name of the Thread then Thread class has provided a predefined method called <strong>getName()</strong>.</p>
+
+    <div class="code-block">
+      <div class="code-header"><span class="code-filename">Thread.java</span><button class="copy-btn" onclick="copyCode(this)"><i class="fas fa-copy"></i></button></div>
+      <pre><code>
+        <span class="hl-keyword">class</span> <span class="hl-type">Thread</span> <span class="hl-keyword">implements</span> <span class="hl-type">Runnable</span> {
+            <span class="hl-keyword">private</span> <span class="hl-keyword">volatile</span> String name;
+            
+            <span class="hl-keyword">public</span> <span class="hl-keyword">final</span> <span class="hl-keyword">synchronized</span> <span class="hl-keyword">void</span> <span class="hl-method">setName</span>(String name) <span class="hl-comment">//setter</span>
+            {
+                <span class="hl-keyword">this</span>.name = name;
+            }
+            
+            <span class="hl-keyword">public</span> <span class="hl-keyword">final</span> String <span class="hl-method">getName</span>() <span class="hl-comment">//getter</span>
+            {
+                <span class="hl-keyword">return</span> <span class="hl-keyword">this</span>.name;
+            }
+        }
+      </code></pre>
+    </div>
+
+    <h3>public final long threadId()</h3>
+    <ul>
+      <li>It is a new method which introduced from <strong>JDK 19V</strong>, Actually before threadId() method we had getIId() method to get the id of the thread but this method is not final so this method is deprecated from JDK 19V and instead of getId() now we have threadId() method which is a final method.</li>
+      <li>Both the methods are used to provide the id of the current thread.</li>
+    </ul>
+
+    <hr>
+
+    <h3>Programs:</h3>
+
+    <div class="code-block">
+      <div class="code-header"><span class="code-filename">ThreadName1.java</span><button class="copy-btn" onclick="copyCode(this)"><i class="fas fa-copy"></i></button></div>
+      <pre><code>
+        <span class="hl-keyword">package</span> com.ravi.basic;
+        <span class="hl-keyword">class</span> <span class="hl-type">DoStuff</span> <span class="hl-keyword">extends</span> <span class="hl-type">Thread</span> {
+            <span class="hl-keyword">@Override</span>
+            <span class="hl-keyword">public</span> <span class="hl-keyword">void</span> <span class="hl-method">run</span>() {
+                String name = <span class="hl-type">Thread</span>.<span class="hl-method">currentThread</span>().<span class="hl-method">getName</span>();
+                <span class="hl-type">IO</span>.println(<span class="hl-string">"Running Thread name is :"</span>+name);
+            }
+        }
+        
+        <span class="hl-keyword">public</span> <span class="hl-keyword">class</span> <span class="hl-type">ThreadName1</span> {
+            <span class="hl-keyword">public</span> <span class="hl-keyword">static</span> <span class="hl-keyword">void</span> <span class="hl-method">main</span>(String[] args) {
+                String name = <span class="hl-type">Thread</span>.<span class="hl-method">currentThread</span>().<span class="hl-method">getName</span>();
+                <span class="hl-type">IO</span>.println(<span class="hl-string">"Current thread name is :"</span>+name);
+                
+                <span class="hl-type">DoStuff</span> d1 = <span class="hl-keyword">new</span> <span class="hl-type">DoStuff</span>();
+                <span class="hl-type">DoStuff</span> d2 = <span class="hl-keyword">new</span> <span class="hl-type">DoStuff</span>();
+                d1.<span class="hl-method">start</span>();
+                d2.<span class="hl-method">start</span>();
+            }
+        }
+      </code></pre>
+    </div>
+    <div class="info-box note">
+      <i class="fas fa-info-circle"></i>
+      <div>
+        <div class="info-title">Note:</div>
+        <p>We are not providing the user-defined names so by default the name of thread would be Thread-0, Thread-1.</p>
+      </div>
+    </div>
+
+    <div class="code-block">
+      <div class="code-header"><span class="code-filename">ThreadName2.java</span><button class="copy-btn" onclick="copyCode(this)"><i class="fas fa-copy"></i></button></div>
+      <pre><code>
+        <span class="hl-keyword">package</span> com.ravi.basic;
+        <span class="hl-keyword">class</span> <span class="hl-type">Demo</span> <span class="hl-keyword">extends</span> <span class="hl-type">Thread</span> {
+            <span class="hl-keyword">@Override</span>
+            <span class="hl-keyword">public</span> <span class="hl-keyword">void</span> <span class="hl-method">run</span>() {
+                <span class="hl-type">Thread</span> t = <span class="hl-type">Thread</span>.<span class="hl-method">currentThread</span>();
+                <span class="hl-type">IO</span>.println(<span class="hl-string">"Running thread name is :"</span>+t.<span class="hl-method">getName</span>());
+                <span class="hl-type">IO</span>.println(<span class="hl-string">"Child thread id is :"</span>+t.<span class="hl-method">getId</span>()); <span class="hl-comment">//Deprecated JDK 19V</span>
+                <span class="hl-type">IO</span>.println(<span class="hl-string">"New Method for thread id (child):"</span>+t.<span class="hl-method">threadId</span>());
+            }
+        }
+        
+        <span class="hl-keyword">public</span> <span class="hl-keyword">class</span> <span class="hl-type">ThreadName2</span> {
+            <span class="hl-keyword">public</span> <span class="hl-keyword">static</span> <span class="hl-keyword">void</span> <span class="hl-method">main</span>(String[] args) {
+                <span class="hl-type">Thread</span> t = <span class="hl-type">Thread</span>.<span class="hl-method">currentThread</span>();
+                
+                <span class="hl-type">Demo</span> d1 = <span class="hl-keyword">new</span> <span class="hl-type">Demo</span>();
+                <span class="hl-type">Demo</span> d2 = <span class="hl-keyword">new</span> <span class="hl-type">Demo</span>();
+                
+                d1.<span class="hl-method">setName</span>(<span class="hl-string">"Child1"</span>);
+                d2.<span class="hl-method">setName</span>(<span class="hl-string">"Child2"</span>);
+                
+                d1.<span class="hl-method">start</span>();
+                d2.<span class="hl-method">start</span>();
+                
+                <span class="hl-type">IO</span>.println(<span class="hl-string">"Current thread name is :"</span>+t.<span class="hl-method">getName</span>());
+                <span class="hl-type">IO</span>.println(<span class="hl-string">"Main thread id is :"</span>+t.<span class="hl-method">getId</span>()); <span class="hl-comment">//Deprecated JDK 19V</span>
+                <span class="hl-type">IO</span>.println(<span class="hl-string">"New Method for thread id (main) :"</span>+t.<span class="hl-method">threadId</span>());
+            }
+        }
+      </code></pre>
+    </div>
+    <div class="info-box note">
+      <i class="fas fa-info-circle"></i>
+      <div>
+        <div class="info-title">Note:</div>
+        <p>Here we are providing the user-defined name i.e child1 and child2 for both the user-defined thread. getId() and threadId() both are used to find the id of the respective thread.</p>
+      </div>
+    </div>
+
+    <div class="code-block">
+      <div class="code-header"><span class="code-filename">ThreadName3.java</span><button class="copy-btn" onclick="copyCode(this)"><i class="fas fa-copy"></i></button></div>
+      <pre><code>
+        <span class="hl-keyword">package</span> com.ravi.basic;
+        <span class="hl-keyword">import</span> java.util.InputMismatchException;
+        <span class="hl-keyword">import</span> java.util.Scanner;
+        
+        <span class="hl-keyword">class</span> <span class="hl-type">BatchAssignment</span> <span class="hl-keyword">extends</span> <span class="hl-type">Thread</span> {
+            <span class="hl-keyword">@Override</span>
+            <span class="hl-keyword">public</span> <span class="hl-keyword">void</span> <span class="hl-method">run</span>() {
+                String name = <span class="hl-type">Thread</span>.<span class="hl-method">currentThread</span>().<span class="hl-method">getName</span>().<span class="hl-method">toLowerCase</span>();
+                <span class="hl-keyword">if</span>(name != <span class="hl-keyword">null</span> &amp;&amp; name.<span class="hl-method">equals</span>(<span class="hl-string">"placement"</span>)) {
+                    <span class="hl-keyword">this</span>.<span class="hl-method">placementBatch</span>();
+                }
+                <span class="hl-keyword">else</span> <span class="hl-keyword">if</span>(name != <span class="hl-keyword">null</span> &amp;&amp; name.<span class="hl-method">equals</span>(<span class="hl-string">"regular"</span>)) {
+                    <span class="hl-keyword">this</span>.<span class="hl-method">regularBatch</span>();
+                }
+            }
+            
+            <span class="hl-keyword">public</span> <span class="hl-keyword">void</span> <span class="hl-method">placementBatch</span>() {
+                <span class="hl-type">System</span>.out.println(<span class="hl-string">"I am a placement batch student."</span>);
+            }
+            
+            <span class="hl-keyword">public</span> <span class="hl-keyword">void</span> <span class="hl-method">regularBatch</span>() {
+                <span class="hl-type">System</span>.out.println(<span class="hl-string">"I am a Regular batch student."</span>);
+            }
+        }
+        
+        <span class="hl-keyword">public</span> <span class="hl-keyword">class</span> <span class="hl-type">ThreadName3</span> {
+            <span class="hl-keyword">public</span> <span class="hl-keyword">static</span> <span class="hl-keyword">void</span> <span class="hl-method">main</span>(String[] args) {
+                <span class="hl-type">Scanner</span> sc = <span class="hl-keyword">new</span> <span class="hl-type">Scanner</span>(<span class="hl-type">System</span>.in);
+                <span class="hl-keyword">try</span>(sc) {
+                    <span class="hl-type">System</span>.out.print(<span class="hl-string">"Enter your Batch Title [Placement/Regular] :"</span>);
+                    String title = sc.<span class="hl-method">next</span>();
+                    <span class="hl-type">BatchAssignment</span> b = <span class="hl-keyword">new</span> <span class="hl-type">BatchAssignment</span>();
+                    b.<span class="hl-method">setName</span>(title);
+                    b.<span class="hl-method">start</span>();
+                } <span class="hl-keyword">catch</span>(<span class="hl-type">InputMismatchException</span> e) {
+                    <span class="hl-type">System</span>.out.println(<span class="hl-string">"Invalid Input"</span>);
+                }
+            }
+        }
+      </code></pre>
+    </div>
+
+    <hr>
+
+    <h2>public static void sleep(long millisecond) throws InterruptedException</h2>
+    <p>sleep() is a predefined static method of Thread class which accepts long ms as a parameter. The main purpose of sleep method to put a thread into temporarily waiting state OR sleeping state, The waiting period of the thread will depend upon the time specified by the user as a parameter of sleep() method.</p>
+    <p><strong>Example:</strong></p>
+    <div class="code-block">
+      <div class="code-header"><span class="code-filename">SleepExample.java</span><button class="copy-btn" onclick="copyCode(this)"><i class="fas fa-copy"></i></button></div>
+      <pre><code>
+        <span class="hl-type">Thread</span>.<span class="hl-method">sleep</span>(<span class="hl-number">1000</span>); <span class="hl-comment">//Thread will wait here for 1 second.</span>
+      </code></pre>
+    </div>
+    <p>It is throwing a checked Exception i.e InterruptedException because there may be chance at runtime, this sleeping thread may be interrupted by a thread so provide either try-catch or declare the method as throws.</p>
+
+    <div class="code-block">
+      <div class="code-header"><span class="code-filename">SleepDemo1.java</span><button class="copy-btn" onclick="copyCode(this)"><i class="fas fa-copy"></i></button></div>
+      <pre><code>
+        <span class="hl-keyword">package</span> com.ravi.sleep;
+        <span class="hl-keyword">class</span> <span class="hl-type">Test</span> <span class="hl-keyword">extends</span> <span class="hl-type">Thread</span> {
+            <span class="hl-keyword">@Override</span>
+            <span class="hl-keyword">public</span> <span class="hl-keyword">void</span> <span class="hl-method">run</span>() {
+                String name = <span class="hl-type">Thread</span>.<span class="hl-method">currentThread</span>().<span class="hl-method">getName</span>();
+                <span class="hl-keyword">for</span>(<span class="hl-type">int</span> i=<span class="hl-number">1</span>; i&lt;=<span class="hl-number">10</span>; i++) {
+                    <span class="hl-type">IO</span>.println(i+<span class="hl-string">" by "</span>+name+<span class="hl-string">" thread"</span>);
+                    <span class="hl-keyword">try</span> {
+                        <span class="hl-type">Thread</span>.<span class="hl-method">sleep</span>(<span class="hl-number">1000</span>); <span class="hl-comment">//1 sec thread will wait</span>
+                    } <span class="hl-keyword">catch</span>(<span class="hl-type">InterruptedException</span> e) {
+                        <span class="hl-type">System</span>.err.println(<span class="hl-string">"Thread is interrupted "</span>+e);
+                    }
+                }
+            }
+        }
+        
+        <span class="hl-keyword">public</span> <span class="hl-keyword">class</span> <span class="hl-type">SleepDemo1</span> {
+            <span class="hl-keyword">public</span> <span class="hl-keyword">static</span> <span class="hl-keyword">void</span> <span class="hl-method">main</span>(String[] args) {
+                <span class="hl-type">IO</span>.println(<span class="hl-type">Thread</span>.<span class="hl-method">currentThread</span>().<span class="hl-method">getName</span>()+<span class="hl-string">" thread is running"</span>);
+                <span class="hl-type">Test</span> t1 = <span class="hl-keyword">new</span> <span class="hl-type">Test</span>();
+                t1.<span class="hl-method">setName</span>(<span class="hl-string">"Child1"</span>);
+                t1.<span class="hl-method">start</span>();
+            }
+        }
+      </code></pre>
+    </div>
+
+    <div class="code-block">
+      <div class="code-header"><span class="code-filename">SleepDemo2.java</span><button class="copy-btn" onclick="copyCode(this)"><i class="fas fa-copy"></i></button></div>
+      <pre><code>
+        <span class="hl-keyword">package</span> com.ravi.sleep;
+        <span class="hl-keyword">class</span> <span class="hl-type">Foo</span> <span class="hl-keyword">extends</span> <span class="hl-type">Thread</span> {
+            <span class="hl-keyword">@Override</span>
+            <span class="hl-keyword">public</span> <span class="hl-keyword">void</span> <span class="hl-method">run</span>() {
+                String name = <span class="hl-type">Thread</span>.<span class="hl-method">currentThread</span>().<span class="hl-method">getName</span>();
+                <span class="hl-keyword">for</span>(<span class="hl-type">int</span> i=<span class="hl-number">1</span>; i&lt;=<span class="hl-number">5</span>; i++) {
+                    <span class="hl-type">IO</span>.println(i+<span class="hl-string">" by "</span>+name+<span class="hl-string">" thread"</span>);
+                    <span class="hl-keyword">try</span> {
+                        <span class="hl-type">Thread</span>.<span class="hl-method">sleep</span>(<span class="hl-number">1000</span>, <span class="hl-number">2000</span>);
+                    } <span class="hl-keyword">catch</span>(<span class="hl-type">InterruptedException</span> e) { }
+                }
+            }
+        }
+        
+        <span class="hl-keyword">public</span> <span class="hl-keyword">class</span> <span class="hl-type">SleepDemo2</span> {
+            <span class="hl-keyword">public</span> <span class="hl-keyword">static</span> <span class="hl-keyword">void</span> <span class="hl-method">main</span>(String[] args) {
+                <span class="hl-type">Foo</span> f1 = <span class="hl-keyword">new</span> <span class="hl-type">Foo</span>();
+                <span class="hl-type">Foo</span> f2 = <span class="hl-keyword">new</span> <span class="hl-type">Foo</span>();
+                
+                f1.<span class="hl-method">setName</span>(<span class="hl-string">"Thread1"</span>);
+                f2.<span class="hl-method">setName</span>(<span class="hl-string">"Thread2"</span>);
+                
+                f1.<span class="hl-method">start</span>();
+                f2.<span class="hl-method">start</span>();
+            }
+        }
+      </code></pre>
+    </div>
+
+    <hr>
+
+    <h2>Life Cycle of a Thread</h2>
+    <p>As we know a thread is well known for Independent execution and it contains a life cycle which internally contains <strong>5 states (Phases)</strong>. During the life cycle of a thread, It can pass from these 5 states. At a time a thread can reside to only one state of the given 5 states.</p>
+    <ol>
+      <li><strong>NEW State</strong> (Born state)</li>
+      <li><strong>RUNNABLE state</strong> (Ready to Run state)</li>
+      <li><strong>RUNNING state</strong></li>
+      <li><strong>WAITING state</strong></li>
+      <li><strong>Dead state</strong></li>
+    </ol>
+
+    <div class="img-block">
+        <img src="/Public/Images/threadLifeCycle.png" width="100%" alt="Thread Life Cycle"class="img-responsive">
+        <img src="/Public/Images/detaildedThreadLifeCycle.png" width="20%" alt="Thread Life Cycle" class="detailedThreadLifeCycle" onclick="openThreadModal()" title="Click to view detailed life cycle of thread">
+    </div>
+
+    <div id="threadModal" class="threadModal">
+        <span onclick="closeThreadModal()">&times;</span>
+        <img src="/Public/Images/detaildedThreadLifeCycle.png">
+    </div>
+  `
   }
 ];
 

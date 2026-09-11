@@ -1952,3 +1952,39 @@ li code {
   color: #dc2626;
   font-weight: 700;
 }
+
+.detailedThreadLifeCycle {
+    cursor: pointer;
+    border-radius: 10px;
+    padding: 5px;
+    transition: var(--transition);
+}
+
+.detailedThreadLifeCycle:hover {
+    background: #f8972064;
+}
+
+.threadModal {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: #000b;
+    z-index: 9999;
+    align-items: center;
+    justify-content: center;
+}
+
+.threadModal img {
+    max-width: 90%;
+    max-height: 70%;
+    border-radius: 10px;
+}
+
+.threadModal span {
+    position: absolute;
+    top: 20px;
+    right: 30px;
+    color: white;
+    font-size: 40px;
+    cursor: pointer;
+}

@@ -454,6 +454,13 @@ document.addEventListener('DOMContentLoaded', function() {
     cleanCodeBlocks();
 });
 
+function openThreadModal() {
+    document.getElementById('threadModal').style.display = 'flex';
+}
+
+function closeThreadModal() {
+    document.getElementById('threadModal').style.display = 'none';
+}
 
 function init() {
     loadState();
@@ -506,5 +513,7 @@ window.copyCode = copyCode;
 window.showToast = showToast;
 window.toggleSidebar = toggleSidebar;
 window.toggleMobileSearch = toggleMobileSearch;
+window.openThreadModal = openThreadModal;
+window.closeThreadModal = closeThreadModal;
 
 document.addEventListener('DOMContentLoaded', init);
