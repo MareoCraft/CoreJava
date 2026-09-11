@@ -186,6 +186,8 @@ function renderTopic(topic) {
                     ${nextTopic ? `<button class="nav-btn next" onclick="navigateToTopic('${nextTopic.id}')"><span><strong>Next</strong></span><i class="fas fa-arrow-right"></i></button>` : '<div></div>'}
                 </div>
             `;
+
+    cleanCodeBlocks();
 }
 
 function updateProgress() {
@@ -417,12 +419,49 @@ document.addEventListener('keydown', (event) => {
     }
 });
 
+// ============ REMOVE LEADING WHITESPACE FROM CODE BLOCKS ============
+function cleanCodeBlocks() {
+    const codeBlocks = document.querySelectorAll('.code-block pre code');
+    codeBlocks.forEach(block => {
+        const lines = block.innerHTML.split('\n');
+        
+        // Remove first empty line if exists
+        if (lines[0] && lines[0].trim() === '') lines.shift();
+        
+        // Remove last empty line if exists
+        if (lines[lines.length - 1] && lines[lines.length - 1].trim() === '') lines.pop();
+        
+        // Find minimum indentation across all non-empty lines
+        let minIndent = Infinity;
+        lines.forEach(line => {
+            if (line.trim() === '') return;
+            const match = line.match(/^(\s*)/);
+            if (match && match[1].length < minIndent) {
+                minIndent = match[1].length;
+            }
+        });
+        
+        if (minIndent === Infinity) minIndent = 0;
+        
+        // Remove the common indentation from each line
+        const cleaned = lines.map(line => line.substring(minIndent)).join('\n');
+        block.innerHTML = cleaned;
+    });
+}
+
+// Run this inside your init() function or on DOMContentLoaded
+document.addEventListener('DOMContentLoaded', function() {
+    cleanCodeBlocks();
+});
+
+
 function init() {
     loadState();
     applyTheme();
     buildSidebar();
     updateDashboard();
     updateProgress();
+    cleanCodeBlocks(); 
 
     document.getElementById('menu-btn').addEventListener('click', () => toggleSidebar());
     document.getElementById('mobile-overlay').addEventListener('click', () => toggleSidebar(false));

@@ -311,9 +311,9 @@ const topicsData = [
       <p>Comments are used to enhance the <strong>readability of the code</strong>. It is ignored by the Compiler.</p>
       <p>In java, we have <strong>3 types of comments</strong>:</p>
       <ol>
-        <li><strong>1) Single Line Comment:</strong> <code>// This is single line comment</code></li>
-        <li><strong>2) Multiline Comment:</strong> <code>/* This is multiline comment */</code></li>
-        <li><strong>3) Documentation comment:</strong> <code>/** This is documentation comment */</code></li>
+        <li><strong>Single Line Comment:</strong> <br> <code>// This is single line comment</code></li>
+        <li><strong>Multi-line Comment:</strong> <br> <code>/* This is multiline comment */</code></li>
+        <li><strong>Documentation Comment:</strong> <br> <code>/** This is documentation comment */</code></li>
       </ol>
       <div class="code-block">
         <div class="code-header"><span class="code-filename">Comments.java</span><button class="copy-btn" onclick="copyCode(this)"><i class="fas fa-copy"></i></button></div>
@@ -1747,7 +1747,7 @@ const topicsData = [
     category: 'Control Flow',
     content: `
       <h2>Jumping OR Branching Statements</h2>
-      <p>Used to transfer control from one part of the program to another.</p>
+      <p>Used to tra Non Static fieldser control from one part of the program to another.</p>
 
       <h3>a) Break Statement</h3>
       <p>Used to exit the loop or switch immediately.</p>
@@ -1994,8 +1994,388 @@ const topicsData = [
   },
 
   // ================================================================
-  // CONSTRUCTOR
+  // OOP CONCEPTS
   // ================================================================
+
+  {
+    id: 'what-is-oops',
+    title: 'What is OOPs?',
+    icon: 'fas fa-cubes',
+    category: 'OOP',
+    content: `
+    <h2>What is OOPs?</h2>
+    <h2>What is an Object?</h2>
+    <ul>
+      <li>An <strong>Object</strong> is a physical entity which exists in the real world. <br><strong>Example:</strong> Marker, Mouse, Fan, Car, Bike etc.</li>
+    </ul>
+
+    <h3>Characteristics of an Object</h3>
+    <p>An object is having <strong>3 characteristics</strong>:</p>
+    <ol>
+      <li><strong>Identification OR Name</strong> of the Object</li>
+      <li><strong>Properties OR State OR Attributes OR Fields</strong> of an Object [Non static fields]</li>
+      <li><strong>Behaviour OR Functionality</strong> of an Object (Non static methods)</li>
+    </ol>
+
+    <h3>How to create an object in java?</h3>
+    <p>In order to create an object in java we should use <strong>class name</strong> and <strong>new keyword</strong>.</p>
+    <p><strong>Example:</strong></p>
+    <div class="code-block">
+      <div class="code-header"><span class="code-filename">Student.java</span><button class="copy-btn" onclick="copyCode(this)"><i class="fas fa-copy"></i></button></div>
+      <pre><code>
+        <span class="hl-keyword">public</span> <span class="hl-keyword">class</span> <span class="hl-type">Student</span> {
+            <span class="hl-comment">// class body</span>
+        }
+        
+        <span class="hl-type">Student</span> raj = <span class="hl-keyword">new</span> <span class="hl-type">Student</span>();
+        <span class="hl-comment">//  |        |        |         |</span>
+        <span class="hl-comment">// class    reference  new       constructor</span>
+        <span class="hl-comment">// name     variable   keyword</span>
+        <span class="hl-comment">//                     for dynamic memory allocation</span>
+      </code></pre>
+    </div>
+
+    <h3>Definition of OOP</h3>
+    <ul>
+      <li>It is a technique through which we can design and develop Java programs using <strong>class</strong> and <strong>object</strong>.</li>
+      <li>In OOP, We concentrate on objects rather than function (POP).</li>
+      <li>As a developer, If we are able to write Java programs on real life objects (Physical Entity) then we can say we are <strong>Object Oriented Programmer</strong>.</li>
+    </ul>
+
+    <h3>Advantages of OOP</h3>
+    <ol>
+      <li><strong>Modularity</strong> [Dividing the bigger task into smaller tasks]</li>
+      <li><strong>Reusability</strong> [Basically we will reuse the BLC classes &amp; Java Code using Inheritance]</li>
+      <li><strong>Flexibility</strong> [Easy to maintain, Can achieve using interface concept]</li>
+    </ol>
+
+    <h3>Features of OOP</h3>
+    <p>We have <strong>six features</strong>:</p>
+    <ol>
+      <li>Class</li>
+      <li>Object</li>
+      <li>Abstraction</li>
+      <li>Encapsulation</li>
+      <li>Inheritance</li>
+      <li>Polymorphism</li>
+    </ol>
+
+    <h3>What is a class?</h3>
+    <p>A class is a <strong>model OR blueprint OR template OR prototype</strong> for creating an object.</p>
+    <p><strong>Example:</strong></p>
+    <p><em>Civil Engineer:</em> Rough Diagram / Architecture [class] → Restaurant [object]</p>
+    <ul>
+      <li>A class is a <strong>user-defined data type</strong>.</li>
+      <li>A CLASS IS A COMPONENT WHICH IS USED TO DEFINE OBJECT PROPERTIES (NON STATIC FIELD) AND OBJECT BEHAVIOUR (NON STATIC METHODS).</li>
+    </ul>
+
+    <h3>Real-life Example: Hammer is Object</h3>
+    <div class="table-responsive">
+      <table>
+        <tr><th>Without Class (Individual work)</th><th>With Class (Blueprint)</th></tr>
+        <tr><td>1 HR : To gather Iron raw Material</td><td>1 HR : To gather Iron raw Material</td></tr>
+        <tr><td>2 HRS : To boil the Iron raw</td><td>2 HRS : To boil the Iron raw</td></tr>
+        <tr><td>4 HRS : To beat &amp; provide the Hammer Shape</td><td>1 HR : To create a dye diagram (class)</td></tr>
+        <tr><td>Total: 7 HRS × 100 = 700 HRS</td><td>3 HRS : To create an original dye</td></tr>
+        <tr><td></td><td>1 HR : To cast the liquid in the dye</td></tr>
+        <tr><td></td><td>Total: 8 HRS × 100 = 400 HRS</td></tr>
+      </table>
+    </div>
+
+    <h3>WAP in java to represent student object and initialize the student properties using reference variable</h3>
+    <p><strong>Diagram:</strong></p>
+    <div class="code-block">
+      <div class="code-header"><span class="code-filename">Student Object (raj)</span><button class="copy-btn" onclick="copyCode(this)"><i class="fas fa-copy"></i></button></div>
+      <pre><code>
+        id = 101
+        name = Raj Gourav
+        height = 5.9
+        talk()
+        writeExam()
+        walk()
+      </code></pre>
+    </div>
+    <div class="code-block">
+      <div class="code-header"><span class="code-filename">Student Object (priya)</span><button class="copy-btn" onclick="copyCode(this)"><i class="fas fa-copy"></i></button></div>
+      <pre><code>
+        id = 201
+        name = Priya
+        height = 5.8
+        talk()
+        writeExam()
+        walk()
+      </code></pre>
+    </div>
+
+    <h3>Programs:</h3>
+    <div class="code-block">
+      <div class="code-header"><span class="code-filename">Student.java (BLC)</span><button class="copy-btn" onclick="copyCode(this)"><i class="fas fa-copy"></i></button></div>
+      <pre><code>
+        <span class="hl-keyword">package</span> com.ravi.oop;
+        <span class="hl-comment">//BLC</span>
+        <span class="hl-keyword">public</span> <span class="hl-keyword">class</span> <span class="hl-type">Student</span> {
+            String name;      <span class="hl-comment">//non static field</span>
+            <span class="hl-type">int</span> id;           <span class="hl-comment">//non static field</span>
+            <span class="hl-type">double</span> height;     <span class="hl-comment">//non static field</span>
+            
+            <span class="hl-keyword">public</span> <span class="hl-keyword">void</span> <span class="hl-method">talk</span>() {  <span class="hl-comment">//non static method</span>
+                <span class="hl-type">IO</span>.println(<span class="hl-string">"Hello Everone, My name is :"</span>+name);
+                <span class="hl-type">IO</span>.println(<span class="hl-string">"My id is :"</span>+id+<span class="hl-string">" and my height is :"</span>+height);
+            }
+            
+            <span class="hl-keyword">public</span> <span class="hl-keyword">void</span> <span class="hl-method">writeExam</span>() {
+                <span class="hl-type">IO</span>.println(<span class="hl-string">"Hii guys, I am "</span>+name+<span class="hl-string">" every saturday I need to write exam"</span>);
+            }
+            
+            <span class="hl-keyword">public</span> <span class="hl-keyword">void</span> <span class="hl-method">walk</span>() {
+                <span class="hl-type">IO</span>.println(<span class="hl-string">"After exam, I am going for long walk for enjoying my sunday"</span>);
+            }
+        }
+      </code></pre>
+    </div>
+
+    <div class="code-block">
+      <div class="code-header"><span class="code-filename">Main.java (ELC)</span><button class="copy-btn" onclick="copyCode(this)"><i class="fas fa-copy"></i></button></div>
+      <pre><code>
+        <span class="hl-keyword">package</span> com.ravi.oop;
+        <span class="hl-comment">//ELC</span>
+        <span class="hl-keyword">public</span> <span class="hl-keyword">class</span> <span class="hl-type">Main</span> {
+            <span class="hl-keyword">void</span> <span class="hl-method">main</span>() {
+                <span class="hl-type">Student</span> raj = <span class="hl-keyword">new</span> <span class="hl-type">Student</span>();
+                <span class="hl-comment">//Initializing the object properties using reference variable</span>
+                raj.name = <span class="hl-string">"Raj Gourav"</span>;
+                raj.id = <span class="hl-number">101</span>;
+                raj.height = <span class="hl-number">5.9</span>;
+                
+                <span class="hl-comment">//[For today only both the BLC and ELC class must be in the same package only]</span>
+                raj.<span class="hl-method">talk</span>();
+                raj.<span class="hl-method">writeExam</span>();
+                raj.<span class="hl-method">walk</span>();
+                
+                <span class="hl-comment">//-----------------------------------------------------</span>
+                
+                <span class="hl-type">Student</span> priya = <span class="hl-keyword">new</span> <span class="hl-type">Student</span>();
+                <span class="hl-comment">//Initializing the object properties using reference variable</span>
+                priya.name = <span class="hl-string">"Priya"</span>;
+                priya.height = <span class="hl-number">5.8</span>;
+                priya.id = <span class="hl-number">201</span>;
+                
+                priya.<span class="hl-method">talk</span>();
+                priya.<span class="hl-method">writeExam</span>();
+                priya.<span class="hl-method">walk</span>();
+            }
+        }
+      </code></pre>
+    </div>
+
+    <h3>Steps for creating Object Oriented Programming [BLC &amp; ELC must be in the same package]</h3>
+    <ol>
+      <li><strong>Step 1:</strong> Create the Object based on the BLC class (Student) inside ELC class. [main method]</li>
+      <li><strong>Step 2:</strong> Define all the object properties and behaviour inside the BLC class based on your imagination. [Thinking]</li>
+      <li><strong>Step 3:</strong> Initialize all the object properties with user friendly value by using reference variable. [raj.rollNumber = 111]</li>
+      <li><strong>Step 4:</strong> call the behaviour (calling the methods) [raj.talk()]</li>
+    </ol>
+  `
+  },
+  {
+    id: 'initializing-object-properties',
+    title: 'Initializing Object Properties',
+    icon: 'fas fa-edit',
+    category: 'OOP',
+    content: `
+    <h2>Initializing our Object properties through reference Variable</h2>
+    <ul>
+      <li>If we initialize our object properties ( Non Static Fields) through reference variable then our BLC &amp; ELC class must be in the same package OR we need to declare our  Non Static Fields with public modifier, which is not recommended.</li>
+    </ul>
+
+    <h3>Employee.java (BLC)</h3>
+    <div class="code-block">
+      <div class="code-header"><span class="code-filename">Employee.java</span><button class="copy-btn" onclick="copyCode(this)"><i class="fas fa-copy"></i></button></div>
+      <pre><code>
+        <span class="hl-keyword">package</span> com.oop.blc;
+        <span class="hl-comment">//BLC</span>
+        <span class="hl-keyword">public</span> <span class="hl-keyword">class</span> <span class="hl-type">Employee</span> {
+            <span class="hl-keyword">public</span> <span class="hl-type">int</span> employeeId;
+            <span class="hl-keyword">public</span> String employeeName;
+            <span class="hl-keyword">public</span> <span class="hl-type">double</span> employeeSalary;
+            
+            <span class="hl-keyword">public</span> <span class="hl-keyword">void</span> <span class="hl-method">talk</span>() {
+                <span class="hl-type">IO</span>.println(<span class="hl-string">"Employee id is :"</span>+employeeId);
+                <span class="hl-type">IO</span>.println(<span class="hl-string">"Employee name is :"</span>+employeeName);
+                <span class="hl-type">IO</span>.println(<span class="hl-string">"Employee salary is :"</span>+employeeSalary);
+            }
+        }
+      </code></pre>
+    </div>
+
+    <h3>EmployeeELC.java (ELC)</h3>
+    <div class="code-block">
+      <div class="code-header"><span class="code-filename">EmployeeELC.java</span><button class="copy-btn" onclick="copyCode(this)"><i class="fas fa-copy"></i></button></div>
+      <pre><code>
+        <span class="hl-keyword">package</span> com.oop.elc;
+        <span class="hl-keyword">import</span> com.oop.blc.Employee;
+        <span class="hl-comment">//ELC</span>
+        <span class="hl-keyword">public</span> <span class="hl-keyword">class</span> <span class="hl-type">EmployeeELC</span> {
+            <span class="hl-keyword">void</span> <span class="hl-method">main</span>() {
+                <span class="hl-type">Employee</span> scott = <span class="hl-keyword">new</span> <span class="hl-type">Employee</span>();
+                scott.employeeId = <span class="hl-number">101</span>;
+                scott.employeeName = <span class="hl-string">"Mr. Scott"</span>;
+                scott.employeeSalary = <span class="hl-number">90000.00</span>;
+                scott.<span class="hl-method">talk</span>();
+            }
+        }
+      </code></pre>
+    </div>
+
+    <div class="info-box note">
+      <i class="fas fa-info-circle"></i>
+      <div>
+        <div class="info-title">Note:</div>
+        <p>Employee class is available in another package so, the access the class as well as non static fields, It must be public.</p>
+      </div>
+    </div>
+
+    <hr>
+
+    <h2>Initializing the non static fields using non static methods</h2>
+    <p>We can initialize our non static fields through public non static methods because if we initialize through reference variable then BLC &amp; ELC must be in the same package.</p>
+
+    <h3>Instance Variable OR Non Static Field</h3>
+    <p>It is a field which we declare at class level. If a non-static field is declared inside the class but outside of the method then it is called Non static field.</p>
+    <div class="code-block">
+      <div class="code-header"><span class="code-filename">Student.java</span><button class="copy-btn" onclick="copyCode(this)"><i class="fas fa-copy"></i></button></div>
+      <pre><code>
+        <span class="hl-keyword">public</span> <span class="hl-keyword">class</span> <span class="hl-type">Student</span> {
+            <span class="hl-type">int</span> rollNumber;      <span class="hl-comment">//Non static field</span>
+            String studentName;   <span class="hl-comment">//Non static field</span>
+            
+            <span class="hl-keyword">public</span> <span class="hl-keyword">void</span> <span class="hl-method">showData</span>() {
+                <span class="hl-comment">// code</span>
+            }
+        }
+      </code></pre>
+    </div>
+    <ul>
+      <li>The life of a non static field will start at the time of creating the object that means we can say we can't think about non static field without object.</li>
+      <li>As far as its accessibility is concerned, Non static fields are accessible anywhere within the same class OR depends upon the access modifier we have applied on the non static field. [To achieve Data hiding, We should compulsory use private access modifier]</li>
+    </ul>
+
+    <h3>Program: Player.java (BLC)</h3>
+    <div class="code-block">
+      <div class="code-header"><span class="code-filename">Player.java</span><button class="copy-btn" onclick="copyCode(this)"><i class="fas fa-copy"></i></button></div>
+      <pre><code>
+        <span class="hl-keyword">package</span> com.oop.blc;
+        <span class="hl-comment">//BLC</span>
+        <span class="hl-keyword">public</span> <span class="hl-keyword">class</span> <span class="hl-type">Player</span> {
+            <span class="hl-type">int</span> playerId;
+            String playerName;
+            <span class="hl-type">double</span> basePrice;
+            
+            <span class="hl-comment">//To initialize the non static fields</span>
+            <span class="hl-keyword">public</span> <span class="hl-keyword">void</span> <span class="hl-method">setPlayerData</span>(<span class="hl-type">int</span> id, String name, <span class="hl-type">double</span> price) {
+                playerId = id;
+                playerName = name;
+                basePrice = price;
+            }
+            
+            <span class="hl-comment">//Will print Player data</span>
+            <span class="hl-keyword">public</span> <span class="hl-keyword">void</span> <span class="hl-method">showPlayerData</span>() {
+                <span class="hl-type">IO</span>.println(<span class="hl-string">"Player id is :"</span>+playerId);
+                <span class="hl-type">IO</span>.println(<span class="hl-string">"Player name is :"</span>+playerName);
+                <span class="hl-type">IO</span>.println(<span class="hl-string">"Player price is :"</span>+basePrice);
+            }
+        }
+      </code></pre>
+    </div>
+
+    <h3>Main.java (ELC)</h3>
+    <div class="code-block">
+      <div class="code-header"><span class="code-filename">Main.java</span><button class="copy-btn" onclick="copyCode(this)"><i class="fas fa-copy"></i></button></div>
+      <pre><code>
+        <span class="hl-keyword">package</span> com.oop.elc;
+        <span class="hl-keyword">import</span> com.oop.blc.Player;
+        <span class="hl-comment">//ELC</span>
+        <span class="hl-keyword">public</span> <span class="hl-keyword">class</span> <span class="hl-type">Main</span> {
+            <span class="hl-keyword">public</span> <span class="hl-keyword">static</span> <span class="hl-keyword">void</span> <span class="hl-method">main</span>(String[] args) {
+                <span class="hl-type">Player</span> virat = <span class="hl-keyword">new</span> <span class="hl-type">Player</span>();
+                virat.<span class="hl-method">setPlayerData</span>(<span class="hl-number">101</span>, <span class="hl-string">"Virat"</span>, <span class="hl-number">12890.90</span>);
+                virat.<span class="hl-method">showPlayerData</span>();
+            }
+        }
+      </code></pre>
+    </div>
+
+    <hr>
+
+    <h2>How to initialize the object properties with parameter variable as per our requirement</h2>
+    <p><strong>Grade Calculation Rules:</strong></p>
+    <ul>
+      <li>If salary is &gt;= 75000 [Grade 'A']</li>
+      <li>If salary is &gt;= 65000 [Grade 'B']</li>
+      <li>If salary is &gt;= 50000 [Grade 'C']</li>
+      <li>else D Grade</li>
+    </ul>
+
+    <h3>Employee.java (BLC)</h3>
+    <div class="code-block">
+      <div class="code-header"><span class="code-filename">Employee.java</span><button class="copy-btn" onclick="copyCode(this)"><i class="fas fa-copy"></i></button></div>
+      <pre><code>
+        <span class="hl-keyword">package</span> com.oop.blc;
+        <span class="hl-comment">//BLC</span>
+        <span class="hl-keyword">public</span> <span class="hl-keyword">class</span> <span class="hl-type">Employee</span> {
+            <span class="hl-type">int</span> employeeId;
+            String employeeName;
+            <span class="hl-type">double</span> employeeSalary;
+            <span class="hl-type">char</span> employeeGrade;
+            
+            <span class="hl-keyword">public</span> <span class="hl-keyword">void</span> <span class="hl-method">setEmployeeData</span>(<span class="hl-type">int</span> id, String name, <span class="hl-type">double</span> salary) {
+                employeeId = id;
+                employeeName = name;
+                employeeSalary = salary;
+            }
+            
+            <span class="hl-keyword">public</span> String <span class="hl-method">getEmployeeData</span>() {
+                <span class="hl-keyword">return</span> <span class="hl-string">"[Employee id is "</span>+employeeId+<span class="hl-string">", Name is :"</span>+employeeName+
+                       <span class="hl-string">", Salary is :"</span>+employeeSalary+<span class="hl-string">", Grade is "</span>+employeeGrade+<span class="hl-string">"]"</span>;
+            }
+            
+            <span class="hl-keyword">public</span> <span class="hl-keyword">void</span> <span class="hl-method">calculateGrade</span>() {
+                <span class="hl-keyword">if</span>(employeeSalary &gt;= <span class="hl-number">75000</span>) {
+                    employeeGrade = <span class="hl-string">'A'</span>;
+                }
+                <span class="hl-keyword">else</span> <span class="hl-keyword">if</span>(employeeSalary &gt;= <span class="hl-number">65000</span>) {
+                    employeeGrade = <span class="hl-string">'B'</span>;
+                }
+                <span class="hl-keyword">else</span> <span class="hl-keyword">if</span>(employeeSalary &gt;= <span class="hl-number">50000</span>) {
+                    employeeGrade = <span class="hl-string">'C'</span>;
+                }
+                <span class="hl-keyword">else</span> {
+                    employeeGrade = <span class="hl-string">'D'</span>;
+                }
+            }
+        }
+      </code></pre>
+    </div>
+
+    <h3>ELC Class</h3>
+    <div class="code-block">
+      <div class="code-header"><span class="code-filename">Main.java</span><button class="copy-btn" onclick="copyCode(this)"><i class="fas fa-copy"></i></button></div>
+      <pre><code>
+        <span class="hl-keyword">package</span> com.oop.elc;
+        <span class="hl-keyword">import</span> com.oop.blc.Employee;
+        <span class="hl-comment">//ELC</span>
+        <span class="hl-keyword">public</span> <span class="hl-keyword">class</span> <span class="hl-type">Main</span> {
+            <span class="hl-keyword">public</span> <span class="hl-keyword">static</span> <span class="hl-keyword">void</span> <span class="hl-method">main</span>(String[] args) {
+                <span class="hl-type">Employee</span> emp = <span class="hl-keyword">new</span> <span class="hl-type">Employee</span>();
+                emp.<span class="hl-method">setEmployeeData</span>(<span class="hl-number">101</span>, <span class="hl-string">"Scott"</span>, <span class="hl-number">80000</span>);
+                emp.<span class="hl-method">calculateGrade</span>();
+                <span class="hl-type">IO</span>.println(emp.<span class="hl-method">getEmployeeData</span>());
+            }
+        }
+      </code></pre>
+    </div>
+  `
+  },
   {
     id: 'constructor',
     title: 'Constructor',
@@ -4052,13 +4432,48 @@ const topicsData = [
       <h2>Access Modifiers in Java</h2>
       <p>Access modifiers control the visibility of classes, fields, and methods.</p>
       <div class="table-responsive">
-        <table>
-          <tr><th>Modifier</th><th>Same Class</th><th>Same Package</th><th>Subclass (Different Package)</th><th>Anywhere</th></tr>
-          <tr><td><strong>private</strong></td><td>✓</td><td>✗</td><td>✗</td><td>✗</td></tr>
-          <tr><td><strong>default</strong></td><td>✓</td><td>✓</td><td>✗</td><td>✗</td></tr>
-          <tr><td><strong>protected</strong></td><td>✓</td><td>✓</td><td>✓</td><td>✗</td></tr>
-          <tr><td><strong>public</strong></td><td>✓</td><td>✓</td><td>✓</td><td>✓</td></tr>
-        </table>
+       <table>
+        <tr>
+          <th class="access-heading">Modifier</th>
+          <th class="access-heading">Same Class</th>
+          <th class="access-heading">Same Package</th>
+          <th class="access-heading">Subclass (Different Package)</th>
+          <th class="access-heading">Anywhere</th>
+        </tr>
+
+        <tr>
+          <td class="access-heading"><strong>private</strong></td>
+          <td class="access-yes">✓</td>
+          <td class="access-no">✗</td>
+          <td class="access-no">✗</td>
+          <td class="access-no">✗</td>
+        </tr>
+
+        <tr>
+          <td class="access-heading"><strong>default</strong></td>
+          <td class="access-yes">✓</td>
+          <td class="access-yes">✓</td>
+          <td class="access-no">✗</td>
+          <td class="access-no">✗</td>
+        </tr>
+
+        <tr>
+          <td class="access-heading"><strong>protected</strong></td>
+          <td class="access-yes">✓</td>
+          <td class="access-yes">✓</td>
+          <td class="access-yes">✓</td>
+          <td class="access-no">✗</td>
+        </tr>
+
+        <tr>
+          <td class="access-heading"><strong>public</strong></td>
+          <td class="access-yes">✓</td>
+          <td class="access-yes">✓</td>
+          <td class="access-yes">✓</td>
+          <td class="access-yes">✓</td>
+        </tr>
+      </table>
+
       </div>
       <h3>Important Points:</h3>
       <ul>

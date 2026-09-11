@@ -1935,3 +1935,20 @@ li code {
 /* Preserve scrolling, but keep all browser scrollbars out of the interface. */
 * { scrollbar-width: none; -ms-overflow-style: none; }
 *::-webkit-scrollbar { display: none; }
+
+.access-heading {
+  text-align: center;
+  vertical-align: middle;
+}
+
+.access-yes {
+  text-align: center;
+  color: #16a34a;
+  font-weight: 700;
+}
+
+.access-no {
+  text-align: center;
+  color: #dc2626;
+  font-weight: 700;
+}
