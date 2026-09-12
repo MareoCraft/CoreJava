@@ -6263,6 +6263,252 @@ const topicsData = [
         <img src="/Public/Images/detaildedThreadLifeCycle.png">
     </div>
   `
+  },
+
+  {
+    id: 'thread-lifecycle-join',
+    title: 'Thread Life Cycle & Join Method',
+    icon: 'fas fa-sync-alt',
+    category: 'Multithreading',
+    content: `
+    <h2>Thread Life Cycle States</h2>
+
+    <h3>New State</h3>
+    <p>Whenever we create a thread instance (Thread Object) a thread comes to new state OR born state. New state does not mean that the Thread has started yet only the object or instance of Thread has been created.</p>
+
+    <h3>Runnable state</h3>
+    <p>Whenever we call start() method on thread instance, A thread moves to Runnable state i.e Ready to run state. Here Thread schedular is responsible to select/pick a particular Thread from Runnable state and sending that particular thread to Running state for execution.</p>
+
+    <h3>Running state</h3>
+    <p>If a thread is in Running state that means the thread is executing its own run() method in a separate runtime stack Memory. From Running state a thread can move to waiting state either by an order of thread schedular OR developer has written some method (wait() or join() or sleep()) to put the thread into temporarily waiting state. From Running state the Thread may also move to Runnable state directly, if developer has written Thread.yield() method explicitly.</p>
+
+    <h3>Waiting state</h3>
+    <p>A thread is in waiting state means it is waiting for it's time period to complete OR in some cases it is also waiting for lock (monitor) OR another thread to complete. Once the time period will be completed then it will re-enter inside the Runnable state to complete its remaining task.</p>
+
+    <h3>Dead or Exit</h3>
+    <p>Once a thread has successfully completed its run method in the corresponding stack then the thread will move to DEAD state. Please remember once a thread is dead we can't restart a thread in java.</p>
+
+    <div class="info-box note">
+      <i class="fas fa-info-circle"></i>
+      <div>
+        <div class="info-title">IQ: If we write Thread.sleep(1000) then exactly after 1 sec the Thread will re-start?</div>
+        <p><strong>Ans:</strong> No, We can't say that the Thread will directly move from waiting state to Running state. The Thread will definetly wait for 1 sec in the waiting state and then again it will re-enter into Runnable state which is control by Thread Schedular so we can't say that the Thread will re-start just after 1 sec.</p>
+      </div>
+    </div>
+
+    <hr>
+
+    <h2>Anonymous inner class by using Thread class with reference variable</h2>
+    <div class="code-block">
+      <div class="code-header"><span class="code-filename">AnonymousInnerClassWithReference.java</span><button class="copy-btn" onclick="copyCode(this)"><i class="fas fa-copy"></i></button></div>
+      <pre><code>
+        <span class="hl-keyword">package</span> com.ravi.anonymous;
+        <span class="hl-keyword">public</span> <span class="hl-keyword">class</span> <span class="hl-type">AnonymousInnerClassWithReference</span> {
+            <span class="hl-keyword">public</span> <span class="hl-keyword">static</span> <span class="hl-keyword">void</span> <span class="hl-method">main</span>(String[] args) {
+                <span class="hl-comment">//Anonymous inner class</span>
+                <span class="hl-type">Thread</span> t1 = <span class="hl-keyword">new</span> <span class="hl-type">Thread</span>() {
+                    <span class="hl-keyword">@Override</span>
+                    <span class="hl-keyword">public</span> <span class="hl-keyword">void</span> <span class="hl-method">run</span>() {
+                        String name = <span class="hl-type">Thread</span>.<span class="hl-method">currentThread</span>().<span class="hl-method">getName</span>();
+                        <span class="hl-type">IO</span>.println(<span class="hl-string">"Running thread name is :"</span>+name);
+                    }
+                };
+                t1.<span class="hl-method">start</span>();
+            }
+        }
+      </code></pre>
+    </div>
+
+    <h2>Anonymous inner class by using Thread class without reference variable</h2>
+    <div class="code-block">
+      <div class="code-header"><span class="code-filename">AnonymousInnerClassWithoutReference.java</span><button class="copy-btn" onclick="copyCode(this)"><i class="fas fa-copy"></i></button></div>
+      <pre><code>
+        <span class="hl-keyword">package</span> com.ravi.anonymous;
+        <span class="hl-keyword">public</span> <span class="hl-keyword">class</span> <span class="hl-type">AnonymousInnerClassWithoutReference</span> {
+            <span class="hl-keyword">public</span> <span class="hl-keyword">static</span> <span class="hl-keyword">void</span> <span class="hl-method">main</span>(String[] args) {
+                <span class="hl-comment">//Anonymous inner class without reference</span>
+                <span class="hl-keyword">new</span> <span class="hl-type">Thread</span>() {
+                    <span class="hl-keyword">@Override</span>
+                    <span class="hl-keyword">public</span> <span class="hl-keyword">void</span> <span class="hl-method">run</span>() {
+                        String name = <span class="hl-type">Thread</span>.<span class="hl-method">currentThread</span>().<span class="hl-method">getName</span>();
+                        <span class="hl-type">IO</span>.println(<span class="hl-string">"Running thread name is :"</span>+name); <span class="hl-comment">//Thread-0</span>
+                    }
+                }.<span class="hl-method">start</span>();
+                
+                String name = <span class="hl-type">Thread</span>.<span class="hl-method">currentThread</span>().<span class="hl-method">getName</span>();
+                <span class="hl-type">IO</span>.println(<span class="hl-string">"Current thread name is :"</span>+name); <span class="hl-comment">//main</span>
+            }
+        }
+      </code></pre>
+    </div>
+
+    <hr>
+
+    <h2>public void join() throws InterruptedException</h2>
+    <p>The main purpose of join() method to put the current thread into temporarily waiting state until the other thread finish its execution. Here the currently executing thread stops its execution and the thread goes into the waiting state. The current thread remains in the wait state until the thread on which the join() method is invoked has achieved its dead state.</p>
+    <p>It also throws checked exception i.e InterruptedException so better to use try catch or declare the method as throws. It is a non static method so we can call this method with the help of Thread object reference.</p>
+
+    <h3>JoinDemo1.java</h3>
+    <div class="code-block">
+      <div class="code-header"><span class="code-filename">JoinDemo1.java</span><button class="copy-btn" onclick="copyCode(this)"><i class="fas fa-copy"></i></button></div>
+      <pre><code>
+        <span class="hl-keyword">package</span> com.ravi.join;
+        <span class="hl-keyword">class</span> <span class="hl-type">Even</span> <span class="hl-keyword">extends</span> <span class="hl-type">Thread</span> {
+            <span class="hl-keyword">@Override</span>
+            <span class="hl-keyword">public</span> <span class="hl-keyword">void</span> <span class="hl-method">run</span>() {
+                <span class="hl-type">IO</span>.println(<span class="hl-string">"Even thread started"</span>);
+                String name = <span class="hl-type">Thread</span>.<span class="hl-method">currentThread</span>().<span class="hl-method">getName</span>();
+                <span class="hl-keyword">for</span>(<span class="hl-type">int</span> i=<span class="hl-number">2</span>; i&lt;=<span class="hl-number">10</span>; i=i+<span class="hl-number">2</span>) {
+                    <span class="hl-type">IO</span>.println(<span class="hl-string">"Even number "</span>+i+<span class="hl-string">" by "</span>+name+<span class="hl-string">" thread"</span>);
+                }
+                <span class="hl-type">IO</span>.println(<span class="hl-string">"Even thread ended"</span>);
+            }
+        }
+        <span class="hl-keyword">class</span> <span class="hl-type">Odd</span> <span class="hl-keyword">extends</span> <span class="hl-type">Thread</span> {
+            <span class="hl-keyword">@Override</span>
+            <span class="hl-keyword">public</span> <span class="hl-keyword">void</span> <span class="hl-method">run</span>() {
+                <span class="hl-type">IO</span>.println(<span class="hl-string">"Odd thread started"</span>);
+                String name = <span class="hl-type">Thread</span>.<span class="hl-method">currentThread</span>().<span class="hl-method">getName</span>();
+                <span class="hl-keyword">for</span>(<span class="hl-type">int</span> i=<span class="hl-number">1</span>; i&lt;=<span class="hl-number">10</span>; i=i+<span class="hl-number">2</span>) {
+                    <span class="hl-type">IO</span>.println(<span class="hl-string">"Odd number "</span>+i+<span class="hl-string">" by "</span>+name);
+                }
+                <span class="hl-type">IO</span>.println(<span class="hl-string">"Odd thread ended"</span>);
+            }
+        }
+        <span class="hl-keyword">public</span> <span class="hl-keyword">class</span> <span class="hl-type">JoinDemo1</span> {
+            <span class="hl-keyword">public</span> <span class="hl-keyword">static</span> <span class="hl-keyword">void</span> <span class="hl-method">main</span>(String[] args) {
+                <span class="hl-type">IO</span>.println(<span class="hl-string">"Main thread started!!!!"</span>);
+                <span class="hl-type">Even</span> even = <span class="hl-keyword">new</span> <span class="hl-type">Even</span>();
+                <span class="hl-type">Odd</span> odd = <span class="hl-keyword">new</span> <span class="hl-type">Odd</span>();
+                even.<span class="hl-method">setName</span>(<span class="hl-string">"Even Thread"</span>);
+                odd.<span class="hl-method">setName</span>(<span class="hl-string">"Odd Thread"</span>);
+                even.<span class="hl-method">start</span>();
+                <span class="hl-keyword">try</span> {
+                    even.<span class="hl-method">join</span>(); <span class="hl-comment">//main thread will go into waiting state till the completion of even thread</span>
+                } <span class="hl-keyword">catch</span>(<span class="hl-type">InterruptedException</span> e) { }
+                <span class="hl-type">IO</span>.println(<span class="hl-string">"Main thread wake up"</span>);
+                odd.<span class="hl-method">start</span>();
+                <span class="hl-keyword">try</span> {
+                    odd.<span class="hl-method">join</span>();
+                } <span class="hl-keyword">catch</span>(<span class="hl-type">InterruptedException</span> e) { }
+                <span class="hl-type">IO</span>.println(<span class="hl-string">"Main thread ended!!!!"</span>);
+            }
+        }
+      </code></pre>
+    </div>
+
+    <h3>JoinDemo2.java</h3>
+    <div class="code-block">
+      <div class="code-header"><span class="code-filename">JoinDemo2.java</span><button class="copy-btn" onclick="copyCode(this)"><i class="fas fa-copy"></i></button></div>
+      <pre><code>
+        <span class="hl-keyword">package</span> com.ravi.join;
+        <span class="hl-keyword">class</span> <span class="hl-type">Alpha</span> <span class="hl-keyword">extends</span> <span class="hl-type">Thread</span> {
+            <span class="hl-keyword">@Override</span>
+            <span class="hl-keyword">public</span> <span class="hl-keyword">void</span> <span class="hl-method">run</span>() {
+                String name = <span class="hl-type">Thread</span>.<span class="hl-method">currentThread</span>().<span class="hl-method">getName</span>();
+                <span class="hl-type">IO</span>.println(name+<span class="hl-string">" thread started"</span>);
+                <span class="hl-type">Beta</span> beta = <span class="hl-keyword">new</span> <span class="hl-type">Beta</span>();
+                beta.<span class="hl-method">setName</span>(<span class="hl-string">"Beta thread"</span>);
+                beta.<span class="hl-method">start</span>();
+                <span class="hl-keyword">try</span> {
+                    beta.<span class="hl-method">join</span>(); <span class="hl-comment">//Alpha thread will wait here</span>
+                    <span class="hl-type">IO</span>.println(<span class="hl-string">"Alpha thread wake up"</span>);
+                } <span class="hl-keyword">catch</span>(<span class="hl-type">InterruptedException</span> e) { }
+                <span class="hl-keyword">for</span>(<span class="hl-type">int</span> i = <span class="hl-number">1</span>; i&lt;=<span class="hl-number">10</span>; i++) {
+                    <span class="hl-type">IO</span>.println(i+<span class="hl-string">" by "</span>+name+<span class="hl-string">" thread......."</span>);
+                }
+                <span class="hl-type">IO</span>.println(name+<span class="hl-string">" thread Ended"</span>);
+            }
+        }
+        <span class="hl-keyword">class</span> <span class="hl-type">Beta</span> <span class="hl-keyword">extends</span> <span class="hl-type">Thread</span> {
+            <span class="hl-keyword">@Override</span>
+            <span class="hl-keyword">public</span> <span class="hl-keyword">void</span> <span class="hl-method">run</span>() {
+                String name = <span class="hl-type">Thread</span>.<span class="hl-method">currentThread</span>().<span class="hl-method">getName</span>();
+                <span class="hl-type">IO</span>.println(name+<span class="hl-string">" thread started"</span>);
+                <span class="hl-keyword">for</span>(<span class="hl-type">int</span> i = <span class="hl-number">1</span>; i&lt;=<span class="hl-number">50</span>; i++) {
+                    <span class="hl-comment">// code</span>
+                }
+                <span class="hl-type">IO</span>.println(name+<span class="hl-string">" thread Ended"</span>);
+            }
+        }
+        <span class="hl-keyword">public</span> <span class="hl-keyword">class</span> <span class="hl-type">JoinDemo2</span> {
+            <span class="hl-keyword">public</span> <span class="hl-keyword">static</span> <span class="hl-keyword">void</span> <span class="hl-method">main</span>(String[] args) {
+                <span class="hl-type">IO</span>.println(<span class="hl-string">"Main thread started"</span>);
+                <span class="hl-type">Alpha</span> al = <span class="hl-keyword">new</span> <span class="hl-type">Alpha</span>();
+                al.<span class="hl-method">setName</span>(<span class="hl-string">"Alpha Thread"</span>);
+                al.<span class="hl-method">start</span>();
+                <span class="hl-keyword">try</span> {
+                    al.<span class="hl-method">join</span>(); <span class="hl-comment">//main thread is waiting for alpha thread to complete</span>
+                } <span class="hl-keyword">catch</span>(<span class="hl-type">InterruptedException</span> e) { }
+                <span class="hl-type">IO</span>.println(<span class="hl-string">"Main thread Ended"</span>);
+            }
+        }
+      </code></pre>
+    </div>
+
+    <h3>JoinDemo3.java (Deadlock)</h3>
+    <div class="code-block">
+      <div class="code-header"><span class="code-filename">JoinDemo3.java</span><button class="copy-btn" onclick="copyCode(this)"><i class="fas fa-copy"></i></button></div>
+      <pre><code>
+        <span class="hl-keyword">package</span> com.ravi.join;
+        <span class="hl-keyword">public</span> <span class="hl-keyword">class</span> <span class="hl-type">JoinDemo3</span> {
+            <span class="hl-keyword">public</span> <span class="hl-keyword">static</span> <span class="hl-keyword">void</span> <span class="hl-method">main</span>(String[] args) {
+                <span class="hl-type">IO</span>.println(<span class="hl-string">"Main thread started"</span>);
+                <span class="hl-type">Thread</span> t = <span class="hl-type">Thread</span>.<span class="hl-method">currentThread</span>();
+                <span class="hl-keyword">for</span>(<span class="hl-type">int</span> i=<span class="hl-number">1</span>; i&lt;=<span class="hl-number">10</span>; i++) {
+                    <span class="hl-type">IO</span>.println(i+<span class="hl-string">" by "</span>+t.<span class="hl-method">getName</span>()+<span class="hl-string">" thread "</span>);
+                    <span class="hl-keyword">try</span> {
+                        t.<span class="hl-method">join</span>(); <span class="hl-comment">//main thread is waiting for main thread to complete so it is deadlock</span>
+                    } <span class="hl-keyword">catch</span>(<span class="hl-type">InterruptedException</span> e) { }
+                }
+                <span class="hl-type">IO</span>.println(<span class="hl-string">"Main thread ended"</span>);
+            }
+        }
+      </code></pre>
+    </div>
+
+    <h3>Real time use of join() method</h3>
+    <div class="code-block">
+      <div class="code-header"><span class="code-filename">JoinDemo4.java</span><button class="copy-btn" onclick="copyCode(this)"><i class="fas fa-copy"></i></button></div>
+      <pre><code>
+        <span class="hl-keyword">package</span> com.ravi.join;
+        <span class="hl-comment">//Online banking amount transfer after OTP Verification</span>
+        <span class="hl-keyword">class</span> <span class="hl-type">BalanceCheck</span> <span class="hl-keyword">extends</span> <span class="hl-type">Thread</span> {
+            <span class="hl-keyword">@Override</span>
+            <span class="hl-keyword">public</span> <span class="hl-keyword">void</span> <span class="hl-method">run</span>() {
+                <span class="hl-type">IO</span>.println(<span class="hl-string">"Verifying the sufficient balance"</span>);
+                <span class="hl-keyword">try</span> {
+                    <span class="hl-type">Thread</span>.<span class="hl-method">sleep</span>(<span class="hl-number">1000</span>);
+                } <span class="hl-keyword">catch</span>(<span class="hl-type">InterruptedException</span> e) { }
+                <span class="hl-type">IO</span>.println(<span class="hl-string">"Sufficient balance available"</span>);
+            }
+        }
+        <span class="hl-keyword">class</span> <span class="hl-type">OTPVerification</span> <span class="hl-keyword">extends</span> <span class="hl-type">Thread</span> {
+            <span class="hl-keyword">@Override</span>
+            <span class="hl-keyword">public</span> <span class="hl-keyword">void</span> <span class="hl-method">run</span>() {
+                <span class="hl-type">IO</span>.println(<span class="hl-string">"OTP verification is in progress"</span>);
+                <span class="hl-keyword">try</span> {
+                    <span class="hl-type">Thread</span>.<span class="hl-method">sleep</span>(<span class="hl-number">1200</span>);
+                } <span class="hl-keyword">catch</span>(<span class="hl-type">InterruptedException</span> e) { }
+                <span class="hl-type">IO</span>.println(<span class="hl-string">"OTP Verified"</span>);
+            }
+        }
+        <span class="hl-keyword">public</span> <span class="hl-keyword">class</span> <span class="hl-type">JoinDemo4</span> {
+            <span class="hl-keyword">public</span> <span class="hl-keyword">static</span> <span class="hl-keyword">void</span> <span class="hl-method">main</span>(String[] args) <span class="hl-keyword">throws</span> <span class="hl-type">InterruptedException</span> {
+                <span class="hl-type">IO</span>.println(<span class="hl-string">"Amount transfer process initiated...."</span>);
+                <span class="hl-type">BalanceCheck</span> bal = <span class="hl-keyword">new</span> <span class="hl-type">BalanceCheck</span>();
+                <span class="hl-type">OTPVerification</span> otp = <span class="hl-keyword">new</span> <span class="hl-type">OTPVerification</span>();
+                bal.<span class="hl-method">start</span>();
+                otp.<span class="hl-method">start</span>();
+                otp.<span class="hl-method">join</span>();
+                bal.<span class="hl-method">join</span>();
+                <span class="hl-comment">//Main thread cannot transfer the amount without OTP verification &amp; Balance check</span>
+                <span class="hl-type">IO</span>.println(<span class="hl-string">"Amount transfer successfully"</span>);
+            }
+        }
+      </code></pre>
+    </div>
+  `
   }
 ];
 
