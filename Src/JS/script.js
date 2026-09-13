@@ -1,6 +1,6 @@
 // ==================== COMPLETE DATA ====================
 import topicsData from './topicData.js';
-import { trackEvent } from './firebase.js';
+import { isAuthenticated, requestGoogleSignIn, trackEvent } from './firebase.js';
 
 // ============ STATE MANAGEMENT ============
 let state = {
@@ -10,6 +10,13 @@ let state = {
     recentTopics: [],
     theme: 'light'
 };
+
+const FREE_TOPIC_COUNT = 4;
+let pendingLockedTopicId = null;
+
+function topicRequiresSignIn(topicId) {
+    return topicsData.findIndex(topic => topic.id === topicId) >= FREE_TOPIC_COUNT;
+}
 
 function saveState() {
     localStorage.setItem('coreJavaMasteryState', JSON.stringify({
@@ -93,8 +100,9 @@ function buildSidebar() {
             const isCompleted = state.completedTopics.has(topic.id);
             const isBookmarked = state.bookmarkedTopics.has(topic.id);
             const isActive = state.currentTopic === topic.id;
+            const isLocked = topicRequiresSignIn(topic.id) && !isAuthenticated();
 
-            html += `<li class="topic-item ${isActive ? 'active' : ''} ${isCompleted ? 'completed' : ''}"
+            html += `<li class="topic-item ${isActive ? 'active' : ''} ${isCompleted ? 'completed' : ''} ${isLocked ? 'locked' : ''}"
                         data-topic-id="${topic.id}" 
                         onclick="navigateToTopic('${topic.id}')">
                         <i class="${topic.icon} topic-icon"></i>
@@ -102,6 +110,7 @@ function buildSidebar() {
                         <span class="topic-status">
                             ${isCompleted ? '<i class="fas fa-check-circle"></i>' : ''}
                             ${isBookmarked ? '<i class="fas fa-bookmark"></i>' : ''}
+                            ${isLocked ? '<i class="fas fa-lock" title="Sign in to unlock"></i>' : ''}
                         </span>
                     </li>`;
         });
@@ -115,6 +124,18 @@ function buildSidebar() {
 function navigateToTopic(topicId) {
     const topic = topicsData.find(t => t.id === topicId);
     if (!topic) return;
+
+    if (topicRequiresSignIn(topicId) && !isAuthenticated()) {
+        pendingLockedTopicId = topicId;
+        showToast('Sign in with Google to unlock this topic.', 'info');
+        requestGoogleSignIn().then(signedIn => {
+            if (signedIn && pendingLockedTopicId === topicId) {
+                pendingLockedTopicId = null;
+                navigateToTopic(topicId);
+            }
+        });
+        return;
+    }
 
     state.currentTopic = topicId;
     trackEvent('view_topic', { topic_id: topicId, topic_name: topic.title });
@@ -355,7 +376,7 @@ function showToast(message, type = 'info') {
     const toast = document.getElementById('toast');
     toast.innerHTML = `<i class="fas fa-${type === 'success' ? 'check-circle' : type === 'error' ? 'exclamation-circle' : 'info-circle'}"></i> ${message}`;
     toast.className = `toast show ${type}`;
-    setTimeout(() => toast.classList.remove('show'), 3000);
+    setTimeout(() => toast.classList.remove('show'), 4000);
 }
 
 function copyCode(btn) {
@@ -469,6 +490,7 @@ function init() {
     updateDashboard();
     updateProgress();
     cleanCodeBlocks(); 
+    showToast('Sign In With Google To Access All Topics', 'error');
 
     document.getElementById('menu-btn').addEventListener('click', () => toggleSidebar());
     document.getElementById('mobile-overlay').addEventListener('click', () => toggleSidebar(false));
@@ -517,3 +539,4 @@ window.openThreadModal = openThreadModal;
 window.closeThreadModal = closeThreadModal;
 
 document.addEventListener('DOMContentLoaded', init);
+document.addEventListener('firebase-auth-state-changed', () => buildSidebar());

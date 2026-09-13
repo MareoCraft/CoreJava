@@ -21,6 +21,7 @@ let analytics = null;
 isSupported().then(supported => { if (supported) analytics = getAnalytics(app); }).catch(() => {});
 
 export function trackEvent(name, params = {}) { if (analytics) logEvent(analytics, name, params); }
+export function isAuthenticated() { return Boolean(auth.currentUser); }
 function notify(message, type = 'info') { window.showToast?.(message, type); }
 
 function updateProfile(user) {
@@ -45,6 +46,7 @@ async function signInWithGoogle() {
     try {
         const result = await signInWithPopup(auth, provider);
         trackEvent('login', { method: 'google' }); notify(`Welcome, ${result.user.displayName || 'there'}!`, 'success');
+        return true;
     } catch (error) {
         const messages = {
             'auth/popup-closed-by-user': 'Google sign-in was cancelled.',
@@ -53,8 +55,10 @@ async function signInWithGoogle() {
             'auth/network-request-failed': 'Sign-in needs an internet connection. Please try again when online.'
         };
         console.error('Google sign-in failed:', error); notify(messages[error.code] || 'Unable to sign in with Google. Please try again.', 'error');
+        return false;
     }
 }
+export function requestGoogleSignIn() { return signInWithGoogle(); }
 async function signOutUser() { try { await signOut(auth); notify('Signed out successfully.'); } catch (error) { console.error('Sign-out failed:', error); notify('Unable to sign out. Please try again.', 'error'); } }
 
 function initAccountUi() {
@@ -74,6 +78,9 @@ function initAccountUi() {
         }
     });
     setPersistence(auth, browserLocalPersistence).catch(error => console.warn('Could not set auth persistence:', error));
-    onAuthStateChanged(auth, updateProfile);
+    onAuthStateChanged(auth, user => {
+        updateProfile(user);
+        document.dispatchEvent(new CustomEvent('firebase-auth-state-changed', { detail: { signedIn: Boolean(user) } }));
+    });
 }
 if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', initAccountUi, { once: true }); else initAccountUi();
