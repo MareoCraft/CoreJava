@@ -58,17 +58,25 @@ function loadState() {
 
 function toggleTheme() {
     state.theme = state.theme === 'light' ? 'dark' : 'light';
+
     document.documentElement.setAttribute('data-theme', state.theme);
-    const icon = document.querySelector('#theme-toggle i');
-    icon.className = state.theme === 'light' ? 'fas fa-moon' : 'fas fa-sun';
+    // Update switch position
+    const toggle = document.querySelector('#theme-toggle');
+    if (toggle) {
+        toggle.checked = state.theme === 'dark';
+    }
     saveState();
 }
 
 function applyTheme() {
     document.documentElement.setAttribute('data-theme', state.theme);
-    const icon = document.querySelector('#theme-toggle i');
-    icon.className = state.theme === 'light' ? 'fas fa-moon' : 'fas fa-sun';
+    // Update switch position
+    const toggle = document.querySelector('#theme-toggle');
+    if (toggle) {
+        toggle.checked = state.theme === 'dark';
+    }
 }
+
 
 function buildSidebar() {
     const sidebarNav = document.getElementById('sidebar-nav');
@@ -105,7 +113,7 @@ function buildSidebar() {
             html += `<li class="topic-item ${isActive ? 'active' : ''} ${isCompleted ? 'completed' : ''} ${isLocked ? 'locked' : ''}"
                         data-topic-id="${topic.id}" 
                         onclick="navigateToTopic('${topic.id}')">
-                        <i class="${topic.icon} topic-icon"></i>
+                        <i class="${isCompleted ? 'fa-solid fa-check' : topic.icon} topic-icon"></i>
                         <span class="topic-name">${topic.title}</span>
                         <span class="topic-status">
                             ${isCompleted ? '<i class="fas fa-check-circle"></i>' : ''}
@@ -445,13 +453,13 @@ function cleanCodeBlocks() {
     const codeBlocks = document.querySelectorAll('.code-block pre code');
     codeBlocks.forEach(block => {
         const lines = block.innerHTML.split('\n');
-        
+
         // Remove first empty line if exists
         if (lines[0] && lines[0].trim() === '') lines.shift();
-        
+
         // Remove last empty line if exists
         if (lines[lines.length - 1] && lines[lines.length - 1].trim() === '') lines.pop();
-        
+
         // Find minimum indentation across all non-empty lines
         let minIndent = Infinity;
         lines.forEach(line => {
@@ -461,9 +469,9 @@ function cleanCodeBlocks() {
                 minIndent = match[1].length;
             }
         });
-        
+
         if (minIndent === Infinity) minIndent = 0;
-        
+
         // Remove the common indentation from each line
         const cleaned = lines.map(line => line.substring(minIndent)).join('\n');
         block.innerHTML = cleaned;
@@ -471,7 +479,7 @@ function cleanCodeBlocks() {
 }
 
 // Run this inside your init() function or on DOMContentLoaded
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function () {
     cleanCodeBlocks();
 });
 
@@ -489,7 +497,7 @@ function init() {
     buildSidebar();
     updateDashboard();
     updateProgress();
-    cleanCodeBlocks(); 
+    cleanCodeBlocks();
     showToast('Sign In With Google To Access All Topics', 'error');
 
     document.getElementById('menu-btn').addEventListener('click', () => toggleSidebar());

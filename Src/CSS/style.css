@@ -253,7 +253,123 @@ body {
     color: var(--text-light);
 }
 
-.theme-toggle,
+.theme-switch {
+    position: relative;
+    display: inline-block;
+    width: 58px;
+    height: 32px;
+    cursor: pointer;
+}
+
+/* Hide checkbox */
+.theme-switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+/* Switch background */
+.theme-slider {
+    position: absolute;
+    inset: 0;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    padding: 4px;
+
+    background: #e2e8f0;
+    border: 1px solid #cbd5e1;
+    border-radius: 50px;
+
+    transition: 0.3s ease;
+}
+
+/* Sliding circle */
+.theme-slider::before {
+    content: "";
+
+    position: absolute;
+    width: 24px;
+    height: 24px;
+    left: 4px;
+    top: 3px;
+
+    background: #ffffff;
+    border-radius: 50%;
+
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+
+    transition: 0.3s ease;
+    z-index: 2;
+}
+
+/* Icons */
+.theme-slider i {
+    position: relative;
+    z-index: 3;
+
+    width: 24px;
+    text-align: center;
+
+    font-size: 13px;
+}
+
+.sun-icon {
+    color: var(--primary-color);
+}
+
+.moon-icon {
+    color: var(--primary-color);
+}
+
+.theme-switch input:checked + .theme-slider {
+    background: #1e293b;
+    border-color: #334155;
+}
+
+.theme-switch input:checked + .theme-slider::before {
+    transform: translateX(26px);
+}
+
+.theme-switch input:checked + .theme-slider .moon-icon {
+    color: #ffffff;
+}
+
+.theme-switch input:checked + .theme-slider .sun-icon {
+    color: #94a3b8;
+}
+
+/* Hover */
+.theme-switch:hover .theme-slider {
+    box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.1);
+}
+
+/* Mobile */
+@media (max-width: 600px) {
+    .theme-switch {
+        width: 52px;
+        height: 29px;
+    }
+
+    .theme-slider::before {
+        width: 21px;
+        height: 21px;
+        top: 3px;
+        left: 3px;
+    }
+
+    .theme-switch input:checked + .theme-slider::before {
+        transform: translateX(23px);
+    }
+
+    .theme-slider i {
+        width: 21px;
+        font-size: 11px;
+    }
+}
+
 .bookmark-btn {
     background: none;
     border: none;
@@ -266,7 +382,6 @@ body {
     transition: var(--transition);
 }
 
-.theme-toggle:hover,
 .bookmark-btn:hover {
     background: var(--bg-light);
 }
@@ -696,11 +811,13 @@ body {
 
 .topic-content h2 {
     font-family: 'Poppins', sans-serif;
-    font-size: 1.2rem;
+    font-size: 1rem;
+    padding: 5px 10px;
     margin-top: 10px;
     margin-bottom: 15px;
     color: var(--primary-color);
     border-left: 3px solid var(--primary-color);
+    background: var(--bg-light);
     padding-left: 5px;
     border-radius: 10px;
 }

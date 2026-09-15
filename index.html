@@ -3,14 +3,40 @@
 
 <head>
     <meta charset="UTF-8">
+    <!-- Responsive / Mobile -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="theme-color" content="#2563eb">
-    <meta name="description" content="An offline-friendly Core Java learning companion by Ravishankar Sir.">
+    <meta name="color-scheme" content="light dark">
+    <!-- Primary SEO -->
+    <title>Core Java Mastery – Learn Java Programming, Examples & Practice</title>
+    <meta name="description" content="Learn Core Java step by step with easy tutorials, Java examples, OOP concepts, programming exercises, practice questions and coding problems.">
+    <meta name="keywords" content="Core Java, Java tutorial, Java programming, learn Java, Java examples, Java exercises, Java practice questions, Java coding problems, Java OOP, Java interview questions, Java concepts, Core Java tutorial">
+    <meta name="author" content="Ravishankar Sir">
+    <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
+    <meta name="googlebot" content="index, follow">
+    <!-- Canonical URL -->
+    <link rel="canonical" href="https://corej.netlify.app/">
+    <!-- Open Graph / Facebook / WhatsApp / LinkedIn -->
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="Core Java Mastery – Learn Java Programming & Practice">
+    <meta property="og:description" content="Learn Core Java with simple explanations, practical examples, coding exercises, OOP concepts and Java practice problems.">
+    <meta property="og:url" content="https://corej.netlify.app/">
+    <meta property="og:site_name" content="Core Java Mastery">
+    <meta property="og:image" content="https://corej.netlify.app/assets/og-image.png">
+    <meta property="og:image:alt" content="Core Java Mastery – Learn Java Programming">
+    <!-- Twitter / X -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Core Java Mastery – Learn Java Programming & Practice">
+    <meta name="twitter:description" content="Learn Core Java through tutorials, examples, coding exercises, OOP concepts and practice problems.">
+    <meta name="twitter:image" content="https://corej.netlify.app/assets/og-image.png">
+    <!-- Mobile Web App -->
     <meta name="mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="default">
-    <meta name="apple-mobile-web-app-title" content="Core Java">
-    <title>Core Java Mastery</title>
+    <meta name="apple-mobile-web-app-title" content="Core Java Mastery">
+    <link rel="manifest" href="/manifest.json">
+    <link rel="icon" type="image/png" href="/favicon.png">
+    <link rel="apple-touch-icon" href="/icons/apple-touch-icon.png">
     <link rel="icon" href="./Public/Images/java.png" type="image/png">
     <link rel="apple-touch-icon" href="./icons/icon-192.png">
     <link rel="manifest" href="./manifest.json">
@@ -52,7 +78,16 @@
             <div class="progress-indicator" title="Overall Progress">
                 <div class="progress-circle" id="progress-circle"><span id="progress-text">0%</span></div>
             </div>
-            <button class="theme-toggle" id="theme-toggle" onclick="toggleTheme()"><i class="fas fa-moon"></i></button>
+            <label class="theme-switch" title="Toggle dark mode">
+                <input type="checkbox" id="theme-toggle" onchange="toggleTheme()">
+
+                <span class="theme-slider">
+                    <i class="fas fa-sun sun-icon"></i>
+                    <i class="fas fa-moon moon-icon"></i>
+                </span>
+            </label>
+
+
             <button class="bookmark-btn" onclick="showBookmarks()"><i class="fas fa-bookmark"></i><span class="badge"
                     id="bookmark-count">0</span></button>
         </div>
@@ -61,25 +96,28 @@
         <aside class="sidebar" id="sidebar">
             <div class="sidebar-header">
                 <h3><i class="fas fa-graduation-cap"></i> Course Content</h3>
-                <a href="#" aria-label="Go to dashboard" title="Dashboard"
-                    onclick="showDashboard(); toggleSidebar(false); return false;"><i class="fa-solid fa-house-chimney" aria-hidden="true"></i></a>
+                <a href="#" aria-label="Go to dashboard" title="Dashboard" onclick="showDashboard(); toggleSidebar(false); return false;"><i class="fa-solid fa-house-chimney" aria-hidden="true"></i></a>
             </div>
             <nav class="sidebar-nav" id="sidebar-nav"></nav>
             <section class="sidebar-profile" id="sidebar-profile" aria-label="Account">
                 <button class="google-sign-in" id="googleSignInButton" type="button">
                     <img src="./Public/Images/google.png" width="20" height="20" alt="Google Icon"><span>Continue with Google</span>
                 </button>
-                <button class="profile-summary" id="profileSummary" type="button" aria-expanded="false" aria-controls="profileDropdown" hidden>
+                <button class="profile-summary" id="profileSummary" type="button" aria-expanded="false"
+                    aria-controls="profileDropdown" hidden>
                     <img id="profilePhoto" src="./Public/Images/java.png" alt="" referrerpolicy="no-referrer">
-                    <span class="profile-text"><strong id="profileName"></strong><small id="profileEmail"></small></span>
+                    <span class="profile-text"><strong id="profileName"></strong><small
+                            id="profileEmail"></small></span>
                     <i class="fas fa-chevron-up" aria-hidden="true"></i>
                 </button>
                 <div class="profile-dropdown" id="profileDropdown" hidden>
                     <div class="profile-dropdown-header">
                         <img id="dropdownPhoto" src="./Public/Images/java.png" alt="" referrerpolicy="no-referrer">
-                        <div class="profile-dropdown-details"><strong id="dropdownName"></strong><small id="dropdownEmail"></small></div>
+                        <div class="profile-dropdown-details"><strong id="dropdownName"></strong><small
+                                id="dropdownEmail"></small></div>
                     </div>
-                    <button id="googleSignOutButton" type="button"><i class="fas fa-sign-out-alt" aria-hidden="true"></i> Sign Out</button>
+                    <button id="googleSignOutButton" type="button"><i class="fas fa-sign-out-alt"
+                            aria-hidden="true"></i> Sign Out</button>
                 </div>
             </section>
         </aside>
@@ -88,8 +126,9 @@
                 <div class="dashboard-hero">
                     <div class="hero-content">
                         <h1>Core Java <span class="text-gradient">Mastery</span></h1>
-                        <p>Learn Core Java step by step</p>
-                        <button class="btn-primary" onclick="startLearning()"><i class="fas fa-play"></i> Start Learning</button>
+                        <p>Learn Java from fundamentals to advanced concepts <br> through structured lessons, examples and coding practice.</p>
+                        <button class="btn-primary" onclick="startLearning()"><i class="fas fa-play"></i> Start
+                            Learning</button>
                     </div>
                     <div class="hero-graphic">
                         <img src="./Public/Images/java.png" alt="">
