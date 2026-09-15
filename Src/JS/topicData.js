@@ -4209,6 +4209,924 @@ const topicsData = [
     `
   },
 
+  {
+    id: 'lambda-functional-interface',
+    title: 'Writing Lambda for Functional Interface',
+    icon: 'fas fa-code',
+    category: 'Functional Interfaces',
+    content: `
+    <h2>Writing Lambda for Functional interface</h2>
+    <div class="code-block">
+      <div class="code-header"><span class="code-filename">LambdaImplementation.java</span><button class="copy-btn" onclick="copyCode(this)"><i class="fas fa-copy"></i></button></div>
+      <pre><code>
+        <span class="hl-keyword">package</span> com.ravi.functional_interface;
+        
+        <span class="hl-annotation">@FunctionalInterface</span>
+        <span class="hl-keyword">interface</span> <span class="hl-type">Predictable</span> {
+            <span class="hl-keyword">boolean</span> <span class="hl-method">verify</span>(<span class="hl-type">int</span> num);
+        }
+        
+        <span class="hl-keyword">public</span> <span class="hl-keyword">class</span> <span class="hl-type">LambdaImplementation</span> {
+            <span class="hl-keyword">public</span> <span class="hl-keyword">static</span> <span class="hl-keyword">void</span> <span class="hl-method">main</span>(String[] args) {
+                <span class="hl-comment">//Verify whether the number is even OR Odd</span>
+                <span class="hl-type">Predictable</span> p = num -&gt; num%<span class="hl-number">2</span>==<span class="hl-number">0</span>;
+                <span class="hl-type">int</span> no = <span class="hl-type">Integer</span>.<span class="hl-method">parseInt</span>(<span class="hl-type">IO</span>.<span class="hl-method">readln</span>(<span class="hl-string">"Enter a number :"</span>));
+                <span class="hl-keyword">boolean</span> isEven = p.<span class="hl-method">verify</span>(no);
+                <span class="hl-keyword">if</span>(isEven) {
+                    <span class="hl-type">IO</span>.println(no+<span class="hl-string">" is even"</span>);
+                }
+                <span class="hl-keyword">else</span> {
+                    <span class="hl-type">IO</span>.println(no+<span class="hl-string">" is odd"</span>);
+                }
+            }
+        }
+      </code></pre>
+    </div>
+
+    <h2>Working with predefined functional interfaces</h2>
+    <ul>
+      <li>Java has provided the following predefined functional interfaces to work with day to day programming.</li>
+      <li>All these predefined functional interfaces are available in a sub package i.e. <strong>java.util.function</strong> sub package.</li>
+    </ul>
+    <ol>
+      <li>1) Predicate&lt;T&gt;</li>
+      <li>2) Consumer&lt;T&gt;</li>
+      <li>3) Function&lt;T,R&gt;</li>
+      <li>4) Supplier&lt;T&gt;</li>
+      <li>5) BiPredicate&lt;T,U&gt;</li>
+      <li>6) BiConsumer&lt;T,U&gt;</li>
+      <li>7) BiFunction&lt;T,U,R&gt;</li>
+      <li>8) UnaryOperator&lt;T&gt;</li>
+      <li>9) BinaryOperator&lt;T&gt;</li>
+    </ol>
+    <div class="info-box note">
+      <i class="fas fa-info-circle"></i>
+      <div>
+        <div class="info-title">Note:</div>
+        <p>We have total <strong>43 predefined functional interfaces</strong> are available.</p>
+      </div>
+    </div>
+  `
+  },
+
+  {
+    id: 'predicate-interface',
+    title: 'Predicate Functional Interface',
+    icon: 'fas fa-check-circle',
+    category: 'Functional Interfaces',
+    content: `
+    <h2>Predicate&lt;T&gt;</h2>
+    <ul>
+      <li>It is a predefined functional interface available in <strong>java.util.function</strong> sub package.</li>
+      <li>It is used to verify OR test one argument boolean expression.</li>
+    </ul>
+    <div class="code-block">
+      <div class="code-header"><span class="code-filename">Predicate.java</span><button class="copy-btn" onclick="copyCode(this)"><i class="fas fa-copy"></i></button></div>
+      <pre><code>
+        <span class="hl-annotation">@FunctionalInterface</span>
+        <span class="hl-keyword">public</span> <span class="hl-keyword">interface</span> <span class="hl-type">Predicate&lt;T&gt;</span> {
+            <span class="hl-keyword">boolean</span> <span class="hl-method">test</span>(T x);
+        }
+      </code></pre>
+    </div>
+    <p>It accepts one abstract method <code>test(T x)</code> which returns boolean value.</p>
+
+    <h3>Program on Predicate</h3>
+    <div class="code-block">
+      <div class="code-header"><span class="code-filename">PredicateDemo1.java</span><button class="copy-btn" onclick="copyCode(this)"><i class="fas fa-copy"></i></button></div>
+      <pre><code>
+        <span class="hl-keyword">package</span> com.ravi.predicate;
+        <span class="hl-keyword">import</span> java.util.function.Predicate;
+        
+        <span class="hl-keyword">public</span> <span class="hl-keyword">class</span> <span class="hl-type">PredicateDemo1</span> {
+            <span class="hl-keyword">public</span> <span class="hl-keyword">static</span> <span class="hl-keyword">void</span> <span class="hl-method">main</span>(String[] args) {
+                <span class="hl-comment">//verify whether a person is eligible for Vote OR not</span>
+                <span class="hl-type">Predicate&lt;Integer&gt;</span> p = age -&gt; age&gt;=<span class="hl-number">18</span>;
+                <span class="hl-type">int</span> myAge = <span class="hl-type">Integer</span>.<span class="hl-method">parseInt</span>(<span class="hl-type">IO</span>.<span class="hl-method">readln</span>(<span class="hl-string">"Enter your Age :"</span>));
+                <span class="hl-type">IO</span>.println(<span class="hl-string">"Is eligible for Vote ? :"</span>+p.<span class="hl-method">test</span>(myAge));
+            }
+        }
+      </code></pre>
+    </div>
+
+    <div class="code-block">
+      <div class="code-header"><span class="code-filename">PredicateDemo2.java</span><button class="copy-btn" onclick="copyCode(this)"><i class="fas fa-copy"></i></button></div>
+      <pre><code>
+        <span class="hl-keyword">package</span> com.ravi.predicate;
+        <span class="hl-keyword">import</span> java.util.function.Predicate;
+        
+        <span class="hl-keyword">public</span> <span class="hl-keyword">class</span> <span class="hl-type">PredicateDemo2</span> {
+            <span class="hl-keyword">public</span> <span class="hl-keyword">static</span> <span class="hl-keyword">void</span> <span class="hl-method">main</span>(String[] args) {
+                <span class="hl-comment">//Verify the length of the name is &gt; 5 or not</span>
+                <span class="hl-type">Predicate&lt;String&gt;</span> p2 = name -&gt; name.<span class="hl-method">length</span>()&gt;<span class="hl-number">5</span>;
+                String userName = <span class="hl-type">IO</span>.<span class="hl-method">readln</span>(<span class="hl-string">"Enter your Name :"</span>);
+                <span class="hl-keyword">boolean</span> isLength5 = p2.<span class="hl-method">test</span>(userName);
+                <span class="hl-type">IO</span>.println(<span class="hl-string">"Length of "</span>+userName+<span class="hl-string">" is &gt; 5 :"</span>+isLength5);
+            }
+        }
+      </code></pre>
+    </div>
+
+    <div class="code-block">
+      <div class="code-header"><span class="code-filename">PredicateDemo3.java</span><button class="copy-btn" onclick="copyCode(this)"><i class="fas fa-copy"></i></button></div>
+      <pre><code>
+        <span class="hl-keyword">package</span> com.ravi.predicate;
+        <span class="hl-keyword">import</span> java.util.function.Predicate;
+        
+        <span class="hl-keyword">public</span> <span class="hl-keyword">class</span> <span class="hl-type">PredicateDemo3</span> {
+            <span class="hl-keyword">public</span> <span class="hl-keyword">static</span> <span class="hl-keyword">void</span> <span class="hl-method">main</span>(String[] args) {
+                <span class="hl-comment">// Verify whether my name starts with 'R' or not</span>
+                <span class="hl-type">Predicate&lt;String&gt;</span> p3 = str -&gt; str.<span class="hl-method">startsWith</span>(<span class="hl-string">"R"</span>);
+                <span class="hl-type">IO</span>.println(<span class="hl-string">"Is name start with R :"</span>+p3.<span class="hl-method">test</span>(<span class="hl-string">"Ravi"</span>));
+            }
+        }
+      </code></pre>
+    </div>
+
+    <h3>Working with Custom Object</h3>
+    <div class="code-block">
+      <div class="code-header"><span class="code-filename">PredicateDemo4.java</span><button class="copy-btn" onclick="copyCode(this)"><i class="fas fa-copy"></i></button></div>
+      <pre><code>
+        <span class="hl-keyword">package</span> com.ravi.predicate;
+        <span class="hl-keyword">import</span> java.util.function.Predicate;
+        
+        <span class="hl-keyword">record</span> <span class="hl-type">Student</span>(<span class="hl-type">int</span> id, String name, <span class="hl-type">int</span> marks) { }
+        
+        <span class="hl-keyword">public</span> <span class="hl-keyword">class</span> <span class="hl-type">PredicateDemo4</span> {
+            <span class="hl-keyword">public</span> <span class="hl-keyword">static</span> <span class="hl-keyword">void</span> <span class="hl-method">main</span>(String[] args) {
+                <span class="hl-comment">//Verify whether a student is pass OR fail [Marks &gt;= 50 pass]</span>
+                <span class="hl-type">Predicate&lt;Student&gt;</span> p4 = stud -&gt; stud.<span class="hl-method">marks</span>() &gt;=<span class="hl-number">50</span>;
+                <span class="hl-type">Student</span> s1 = <span class="hl-keyword">new</span> <span class="hl-type">Student</span>(<span class="hl-number">101</span>, <span class="hl-string">"Scott"</span>, <span class="hl-number">15</span>);
+                <span class="hl-keyword">boolean</span> isPass = p4.<span class="hl-method">test</span>(s1);
+                <span class="hl-type">IO</span>.println(<span class="hl-string">"Is "</span>+s1.<span class="hl-method">name</span>()+<span class="hl-string">" pass :"</span>+isPass);
+            }
+        }
+      </code></pre>
+    </div>
+
+    <h3>Same program we can re-write with array concept</h3>
+    <div class="code-block">
+      <div class="code-header"><span class="code-filename">PredicateDemo4Array.java</span><button class="copy-btn" onclick="copyCode(this)"><i class="fas fa-copy"></i></button></div>
+      <pre><code>
+        <span class="hl-keyword">package</span> com.ravi.predicate;
+        <span class="hl-keyword">import</span> java.util.function.Predicate;
+        
+        <span class="hl-keyword">record</span> <span class="hl-type">Student</span>(<span class="hl-type">int</span> id, String name, <span class="hl-type">int</span> marks) { }
+        
+        <span class="hl-keyword">public</span> <span class="hl-keyword">class</span> <span class="hl-type">PredicateDemo4</span> {
+            <span class="hl-keyword">public</span> <span class="hl-keyword">static</span> <span class="hl-keyword">void</span> <span class="hl-method">main</span>(String[] args) {
+                <span class="hl-comment">//Verify whether a student is pass OR fail [Marks &gt;= 50 pass]</span>
+                <span class="hl-type">Predicate&lt;Student&gt;</span> p4 = stud -&gt; stud.<span class="hl-method">marks</span>() &gt;=<span class="hl-number">50</span>;
+                <span class="hl-type">Student</span> []students = <span class="hl-keyword">new</span> <span class="hl-type">Student</span>[<span class="hl-number">5</span>];
+                students[<span class="hl-number">0</span>] = <span class="hl-keyword">new</span> <span class="hl-type">Student</span>(<span class="hl-number">101</span>, <span class="hl-string">"Scott"</span>, <span class="hl-number">99</span>);
+                students[<span class="hl-number">1</span>] = <span class="hl-keyword">new</span> <span class="hl-type">Student</span>(<span class="hl-number">102</span>, <span class="hl-string">"John"</span>, <span class="hl-number">40</span>);
+                students[<span class="hl-number">2</span>] = <span class="hl-keyword">new</span> <span class="hl-type">Student</span>(<span class="hl-number">103</span>, <span class="hl-string">"Alen"</span>, <span class="hl-number">89</span>);
+                students[<span class="hl-number">3</span>] = <span class="hl-keyword">new</span> <span class="hl-type">Student</span>(<span class="hl-number">104</span>, <span class="hl-string">"Smith"</span>, <span class="hl-number">45</span>);
+                students[<span class="hl-number">4</span>] = <span class="hl-keyword">new</span> <span class="hl-type">Student</span>(<span class="hl-number">105</span>, <span class="hl-string">"David"</span>, <span class="hl-number">790</span>);
+                
+                <span class="hl-keyword">for</span>(<span class="hl-type">Student</span> student : students) {
+                    <span class="hl-keyword">if</span>(p4.<span class="hl-method">test</span>(student)) {
+                        <span class="hl-type">IO</span>.println(student.<span class="hl-method">name</span>()+<span class="hl-string">" is pass in the exam"</span>);
+                    }
+                    <span class="hl-keyword">else</span> {
+                        <span class="hl-type">IO</span>.println(student.<span class="hl-method">name</span>()+<span class="hl-string">" is Fail in the exam"</span>);
+                    }
+                }
+            }
+        }
+      </code></pre>
+    </div>
+
+    <h3>WAP to calculate the re-sale value of a Car on the following criteria</h3>
+    <ul>
+      <li>a) model must be 2022 OR greater</li>
+      <li>b) Color is white</li>
+      <li>c) mileage is 20 Or greater</li>
+    </ul>
+    <div class="code-block">
+      <div class="code-header"><span class="code-filename">PredicateDemo5.java</span><button class="copy-btn" onclick="copyCode(this)"><i class="fas fa-copy"></i></button></div>
+      <pre><code>
+        <span class="hl-keyword">package</span> com.ravi.predicate;
+        <span class="hl-keyword">import</span> java.util.function.Predicate;
+        
+        <span class="hl-keyword">record</span> <span class="hl-type">Car</span>(String name, <span class="hl-type">int</span> model, String color, <span class="hl-type">int</span> mileage) { }
+        
+        <span class="hl-keyword">public</span> <span class="hl-keyword">class</span> <span class="hl-type">PredicateDemo5</span> {
+            <span class="hl-keyword">public</span> <span class="hl-keyword">static</span> <span class="hl-keyword">void</span> <span class="hl-method">main</span>(String[] args) {
+                <span class="hl-type">Predicate&lt;Car&gt;</span> p5 = car -&gt; car.<span class="hl-method">model</span>()&gt;=<span class="hl-number">2022</span> &amp;&amp; car.<span class="hl-method">color</span>().<span class="hl-method">equalsIgnoreCase</span>(<span class="hl-string">"white"</span>) &amp;&amp; car.<span class="hl-method">mileage</span>() &gt;=<span class="hl-number">20</span>;
+                <span class="hl-keyword">boolean</span> isReadyForSale = p5.<span class="hl-method">test</span>(<span class="hl-keyword">new</span> <span class="hl-type">Car</span>(<span class="hl-string">"Swift"</span>, <span class="hl-number">2024</span>, <span class="hl-string">"White"</span>, <span class="hl-number">21</span>));
+                <span class="hl-keyword">if</span>(isReadyForSale) {
+                    <span class="hl-type">IO</span>.println(<span class="hl-string">"Car is ready for re-sale"</span>);
+                }
+                <span class="hl-keyword">else</span> {
+                    <span class="hl-type">IO</span>.println(<span class="hl-string">"Criteria is not matching"</span>);
+                }
+            }
+        }
+      </code></pre>
+    </div>
+  `
+  },
+
+  {
+    id: 'consumer-function-supplier',
+    title: 'Consumer, Function & Supplier Interfaces',
+    icon: 'fas fa-exchange-alt',
+    category: 'Functional Interfaces',
+    content: `
+    <h2>Consumer&lt;T&gt;</h2>
+    <ul>
+      <li>It is a predefined functional interface available in java.util.function sub package.</li>
+      <li>It is used to accept OR consume a single value and does not return anything.</li>
+    </ul>
+    <div class="code-block">
+      <div class="code-header"><span class="code-filename">Consumer.java</span><button class="copy-btn" onclick="copyCode(this)"><i class="fas fa-copy"></i></button></div>
+      <pre><code>
+        <span class="hl-annotation">@FunctionalInterface</span>
+        <span class="hl-keyword">public</span> <span class="hl-keyword">interface</span> <span class="hl-type">Consumer&lt;T&gt;</span> {
+            <span class="hl-keyword">void</span> <span class="hl-method">accept</span>(T x);
+        }
+      </code></pre>
+    </div>
+    <p>It uses one abstract method <code>accept()</code> which takes one parameter of type T and not returning any value.</p>
+
+    <div class="code-block">
+      <div class="code-header"><span class="code-filename">ConsumerDemo1.java</span><button class="copy-btn" onclick="copyCode(this)"><i class="fas fa-copy"></i></button></div>
+      <pre><code>
+        <span class="hl-keyword">package</span> com.ravi.consumer;
+        <span class="hl-keyword">import</span> java.util.function.Consumer;
+        
+        <span class="hl-keyword">record</span> <span class="hl-type">Employee</span>(<span class="hl-type">int</span> id, String name, <span class="hl-type">double</span> salary) { }
+        
+        <span class="hl-keyword">public</span> <span class="hl-keyword">class</span> <span class="hl-type">ConsumerDemo1</span> {
+            <span class="hl-keyword">public</span> <span class="hl-keyword">static</span> <span class="hl-keyword">void</span> <span class="hl-method">main</span>(String[] args) {
+                <span class="hl-type">Consumer&lt;Integer&gt;</span> c1 = num -&gt; <span class="hl-type">IO</span>.println(<span class="hl-string">"Integer type is :"</span>+num);
+                c1.<span class="hl-method">accept</span>(<span class="hl-number">12</span>);
+                
+                <span class="hl-type">Consumer&lt;Employee&gt;</span> c2 = emp -&gt; {
+                    <span class="hl-type">IO</span>.println(<span class="hl-string">"Employee Id is :"</span>+emp.<span class="hl-method">id</span>());
+                    <span class="hl-type">IO</span>.println(<span class="hl-string">"Employee Name is :"</span>+emp.<span class="hl-method">name</span>());
+                    <span class="hl-type">IO</span>.println(<span class="hl-string">"Employee Salary is :"</span>+emp.<span class="hl-method">salary</span>());
+                };
+                c2.<span class="hl-method">accept</span>(<span class="hl-keyword">new</span> <span class="hl-type">Employee</span>(<span class="hl-number">111</span>, <span class="hl-string">"Scott"</span>, <span class="hl-number">800</span>));
+            }
+        }
+      </code></pre>
+    </div>
+
+    <hr>
+
+    <h2>Function&lt;T,R&gt;</h2>
+    <ul>
+      <li>It is a predefined functional interface available in java.util.function sub package.</li>
+    </ul>
+    <div class="code-block">
+      <div class="code-header"><span class="code-filename">Function.java</span><button class="copy-btn" onclick="copyCode(this)"><i class="fas fa-copy"></i></button></div>
+      <pre><code>
+        <span class="hl-annotation">@FunctionalInterface</span>
+        <span class="hl-keyword">public</span> <span class="hl-keyword">interface</span> <span class="hl-type">Function&lt;T,R&gt;</span> {
+            R <span class="hl-method">apply</span>(T x);
+        }
+      </code></pre>
+    </div>
+    <p><strong>Type Parameters:</strong></p>
+    <ul>
+      <li>T - the type of the INPUT to the function.</li>
+      <li>R - the type of the RESULT of the function. (return type)</li>
+    </ul>
+    <p>It provides an abstract method apply that accepts one argument(T) and produces a result(R).</p>
+    <div class="info-box note">
+      <i class="fas fa-info-circle"></i>
+      <div>
+        <div class="info-title">Note:</div>
+        <p>The type of T(input) and the type of R(Result) both will be decided by the developer.</p>
+      </div>
+    </div>
+
+    <div class="code-block">
+      <div class="code-header"><span class="code-filename">FunctionDemo1.java</span><button class="copy-btn" onclick="copyCode(this)"><i class="fas fa-copy"></i></button></div>
+      <pre><code>
+        <span class="hl-keyword">package</span> com.ravi.function;
+        <span class="hl-keyword">import</span> java.util.function.Function;
+        
+        <span class="hl-keyword">public</span> <span class="hl-keyword">class</span> <span class="hl-type">FunctionDemo1</span> {
+            <span class="hl-keyword">public</span> <span class="hl-keyword">static</span> <span class="hl-keyword">void</span> <span class="hl-method">main</span>(String[] args) {
+                <span class="hl-comment">//Find the length of given city</span>
+                <span class="hl-type">Function&lt;String, Integer&gt;</span> fn1 = city -&gt; city.<span class="hl-method">length</span>();
+                String cityName = <span class="hl-type">IO</span>.<span class="hl-method">readln</span>(<span class="hl-string">"Enter your city name :"</span>);
+                <span class="hl-type">IO</span>.println(<span class="hl-string">"The length of the "</span>+cityName+<span class="hl-string">" city is :"</span>+fn1.<span class="hl-method">apply</span>(cityName));
+            }
+        }
+      </code></pre>
+    </div>
+
+    <h3>Using Function take Employee as BLC class return the updated salary of the employee based on the following criteria</h3>
+    <ul>
+      <li>If salary &gt;= 100000 bonus amount is 20%</li>
+      <li>If salary &gt;= 75000 bonus amount is 15%</li>
+      <li>If salary &gt;= 50000 bonus amount is 10%</li>
+      <li>else 5 % of the salary</li>
+    </ul>
+    <div class="code-block">
+      <div class="code-header"><span class="code-filename">FunctionDemo2.java</span><button class="copy-btn" onclick="copyCode(this)"><i class="fas fa-copy"></i></button></div>
+      <pre><code>
+        <span class="hl-keyword">package</span> com.ravi.function;
+        <span class="hl-keyword">import</span> java.util.Scanner;
+        <span class="hl-keyword">import</span> java.util.function.Function;
+        
+        <span class="hl-keyword">record</span> <span class="hl-type">Employee</span>(<span class="hl-type">int</span> id, String name, <span class="hl-type">double</span> salary) { }
+        
+        <span class="hl-keyword">public</span> <span class="hl-keyword">class</span> <span class="hl-type">FunctionDemo2</span> {
+            <span class="hl-keyword">public</span> <span class="hl-keyword">static</span> <span class="hl-keyword">void</span> <span class="hl-method">main</span>(String[] args) {
+                <span class="hl-type">Function&lt;Employee,Double&gt;</span> fn2 = emp -&gt; {
+                    <span class="hl-type">double</span> bonus = <span class="hl-number">0.0</span>;
+                    <span class="hl-type">double</span> salary = emp.<span class="hl-method">salary</span>();
+                    <span class="hl-keyword">if</span>(salary &gt;=<span class="hl-number">100000</span>) {
+                        bonus = salary * <span class="hl-number">0.20</span>;
+                    }
+                    <span class="hl-keyword">else</span> <span class="hl-keyword">if</span>(salary &gt;=<span class="hl-number">75000</span>) {
+                        bonus = salary * <span class="hl-number">0.15</span>;
+                    }
+                    <span class="hl-keyword">else</span> <span class="hl-keyword">if</span>(salary &gt;=<span class="hl-number">50000</span>) {
+                        bonus = salary * <span class="hl-number">0.10</span>;
+                    }
+                    <span class="hl-keyword">else</span> {
+                        bonus = salary * <span class="hl-number">0.05</span>;
+                    }
+                    <span class="hl-keyword">return</span> salary + bonus;
+                };
+                
+                <span class="hl-type">Employee</span> employees[] = <span class="hl-keyword">new</span> <span class="hl-type">Employee</span>[<span class="hl-number">4</span>];
+                <span class="hl-type">Scanner</span> sc = <span class="hl-keyword">new</span> <span class="hl-type">Scanner</span>(<span class="hl-type">System</span>.in);
+                
+                <span class="hl-comment">//Initializing the array using for loop</span>
+                <span class="hl-keyword">for</span>(<span class="hl-type">int</span> i=<span class="hl-number">0</span>; i&lt;employees.length; i++) {
+                    <span class="hl-type">IO</span>.print(<span class="hl-string">"Enter employee id :"</span>);
+                    <span class="hl-type">int</span> id = <span class="hl-type">Integer</span>.<span class="hl-method">parseInt</span>(sc.<span class="hl-method">nextLine</span>());
+                    <span class="hl-type">IO</span>.print(<span class="hl-string">"Enter employee name :"</span>);
+                    String name = sc.<span class="hl-method">nextLine</span>();
+                    <span class="hl-type">IO</span>.print(<span class="hl-string">"Enter employee salary :"</span>);
+                    <span class="hl-type">double</span> salary = <span class="hl-type">Double</span>.<span class="hl-method">parseDouble</span>(sc.<span class="hl-method">nextLine</span>());
+                    employees[i] = <span class="hl-keyword">new</span> <span class="hl-type">Employee</span>(id, name, salary);
+                }
+                
+                <span class="hl-keyword">for</span>(<span class="hl-type">Employee</span> employee : employees) {
+                    <span class="hl-type">Double</span> updatedSalary = fn2.<span class="hl-method">apply</span>(employee);
+                    <span class="hl-type">IO</span>.println(<span class="hl-string">"Employee id is :"</span>+employee.<span class="hl-method">id</span>());
+                    <span class="hl-type">IO</span>.println(<span class="hl-string">"Employee name is :"</span>+employee.<span class="hl-method">name</span>());
+                    <span class="hl-type">IO</span>.println(<span class="hl-string">"Updated Salary is :"</span>+updatedSalary);
+                }
+            }
+        }
+      </code></pre>
+    </div>
+
+    <hr>
+
+    <h2>Supplier&lt;T&gt;</h2>
+    <ul>
+      <li>It is a predefined functional interface available in java.util.function sub package.</li>
+      <li>It is used to supply the given value which we are passing as a parameter to Supplier&lt;T&gt;.</li>
+    </ul>
+    <div class="code-block">
+      <div class="code-header"><span class="code-filename">Supplier.java</span><button class="copy-btn" onclick="copyCode(this)"><i class="fas fa-copy"></i></button></div>
+      <pre><code>
+        <span class="hl-annotation">@FunctionalInterface</span>
+        <span class="hl-keyword">public</span> <span class="hl-keyword">interface</span> <span class="hl-type">Supplier&lt;T&gt;</span> {
+            T <span class="hl-method">get</span>();
+        }
+      </code></pre>
+    </div>
+    <p>It accepts an abstract method <code>get()</code> which does not accept any parameter and return type T.</p>
+
+    <div class="code-block">
+      <div class="code-header"><span class="code-filename">SupplierDemo.java</span><button class="copy-btn" onclick="copyCode(this)"><i class="fas fa-copy"></i></button></div>
+      <pre><code>
+        <span class="hl-keyword">package</span> com.ravi.supplier;
+        <span class="hl-keyword">import</span> java.util.function.Supplier;
+        
+        <span class="hl-keyword">public</span> <span class="hl-keyword">class</span> <span class="hl-type">SupplierDemo</span> {
+            <span class="hl-keyword">public</span> <span class="hl-keyword">static</span> <span class="hl-keyword">void</span> <span class="hl-method">main</span>(String[] args) {
+                <span class="hl-type">Supplier&lt;String&gt;</span> s1 = () -&gt; <span class="hl-number">12</span>+<span class="hl-number">90</span>+<span class="hl-string">"Java"</span>+<span class="hl-number">12</span>+<span class="hl-number">34</span>;
+                <span class="hl-type">IO</span>.println(s1.<span class="hl-method">get</span>());
+            }
+        }
+      </code></pre>
+    </div>
+
+    <div class="code-block">
+      <div class="code-header"><span class="code-filename">SupplierDemo2.java</span><button class="copy-btn" onclick="copyCode(this)"><i class="fas fa-copy"></i></button></div>
+      <pre><code>
+        <span class="hl-keyword">package</span> com.ravi.supplier;
+        <span class="hl-keyword">import</span> java.util.function.Supplier;
+        
+        <span class="hl-keyword">record</span> <span class="hl-type">Manager</span>(<span class="hl-type">int</span> id, String name, <span class="hl-type">double</span> salary) { }
+        
+        <span class="hl-keyword">public</span> <span class="hl-keyword">class</span> <span class="hl-type">SupplierDemo2</span> {
+            <span class="hl-keyword">public</span> <span class="hl-keyword">static</span> <span class="hl-keyword">void</span> <span class="hl-method">main</span>(String[] args) {
+                <span class="hl-type">Supplier&lt;Manager&gt;</span> s2 = () -&gt; <span class="hl-keyword">new</span> <span class="hl-type">Manager</span>(<span class="hl-number">1</span>, <span class="hl-string">"Scott"</span>, <span class="hl-number">130000</span>);
+                <span class="hl-type">Manager</span> manager = s2.<span class="hl-method">get</span>();
+                <span class="hl-type">IO</span>.println(manager);
+            }
+        }
+      </code></pre>
+    </div>
+
+    <h3>Same program we can re-write with user input</h3>
+    <div class="code-block">
+      <div class="code-header"><span class="code-filename">SupplierDemo2Input.java</span><button class="copy-btn" onclick="copyCode(this)"><i class="fas fa-copy"></i></button></div>
+      <pre><code>
+        <span class="hl-keyword">package</span> com.ravi.supplier;
+        <span class="hl-keyword">import</span> java.util.Scanner;
+        <span class="hl-keyword">import</span> java.util.function.Supplier;
+        
+        <span class="hl-keyword">record</span> <span class="hl-type">Manager</span>(<span class="hl-type">int</span> id, String name, <span class="hl-type">double</span> salary) { }
+        
+        <span class="hl-keyword">public</span> <span class="hl-keyword">class</span> <span class="hl-type">SupplierDemo2</span> {
+            <span class="hl-keyword">public</span> <span class="hl-keyword">static</span> <span class="hl-keyword">void</span> <span class="hl-method">main</span>(String[] args) {
+                <span class="hl-type">Supplier&lt;Manager&gt;</span> s2 = () -&gt; {
+                    <span class="hl-type">Scanner</span> sc = <span class="hl-keyword">new</span> <span class="hl-type">Scanner</span>(<span class="hl-type">System</span>.in);
+                    <span class="hl-type">IO</span>.print(<span class="hl-string">"Enter Manager id :"</span>);
+                    <span class="hl-type">int</span> id = <span class="hl-type">Integer</span>.<span class="hl-method">parseInt</span>(sc.<span class="hl-method">nextLine</span>());
+                    <span class="hl-type">IO</span>.print(<span class="hl-string">"Enter Manager Name :"</span>);
+                    String name = sc.<span class="hl-method">nextLine</span>();
+                    <span class="hl-type">IO</span>.print(<span class="hl-string">"Enter Manager Salary :"</span>);
+                    <span class="hl-type">double</span> salary = <span class="hl-type">Double</span>.<span class="hl-method">parseDouble</span>(sc.<span class="hl-method">nextLine</span>());
+                    <span class="hl-type">Manager</span> m1 = <span class="hl-keyword">new</span> <span class="hl-type">Manager</span>(id, name, salary);
+                    <span class="hl-keyword">return</span> m1;
+                };
+                <span class="hl-type">Manager</span> manager = s2.<span class="hl-method">get</span>();
+                <span class="hl-type">IO</span>.println(manager);
+            }
+        }
+      </code></pre>
+    </div>
+
+    <h3>WAP to generate 8 digits random password</h3>
+    <ul>
+      <li>In order to generate a random number, java has provided a predefined class called <strong>Random</strong> available in java.util package.</li>
+      <li>This Random class has provided a predefined static method called <strong>nextInt(int bounds)</strong> to generate a random number based on the given bounds.</li>
+    </ul>
+    <div class="code-block">
+      <div class="code-header"><span class="code-filename">RandomExample.java</span><button class="copy-btn" onclick="copyCode(this)"><i class="fas fa-copy"></i></button></div>
+      <pre><code>
+        <span class="hl-type">Random</span> r1 = <span class="hl-keyword">new</span> <span class="hl-type">Random</span>();
+        r1.<span class="hl-method">nextInt</span>(<span class="hl-number">10</span>);  <span class="hl-comment">//Will generate a random number from 0 to 9 [Given bound is exclusive]</span>
+      </code></pre>
+    </div>
+    <p>We cannot pass 0 as a bound otherwise It will generate a runtime exception.</p>
+    <div class="code-block">
+      <div class="code-header"><span class="code-filename">RandomNumberGenerator.java</span><button class="copy-btn" onclick="copyCode(this)"><i class="fas fa-copy"></i></button></div>
+      <pre><code>
+        <span class="hl-keyword">package</span> com.ravi.supplier;
+        <span class="hl-keyword">import</span> java.util.Random;
+        
+        <span class="hl-keyword">public</span> <span class="hl-keyword">class</span> <span class="hl-type">RandomNumberGenerator</span> {
+            <span class="hl-keyword">public</span> <span class="hl-keyword">static</span> <span class="hl-keyword">void</span> <span class="hl-method">main</span>(String[] args) {
+                <span class="hl-type">Random</span> r1 = <span class="hl-keyword">new</span> <span class="hl-type">Random</span>();
+                <span class="hl-type">int</span> random = r1.<span class="hl-method">nextInt</span>(<span class="hl-number">10</span>); <span class="hl-comment">//Will generate a random number from 0 to 9</span>
+                <span class="hl-type">IO</span>.println(random);
+            }
+        }
+      </code></pre>
+    </div>
+
+    <div class="code-block">
+      <div class="code-header"><span class="code-filename">PasswordGenerator.java</span><button class="copy-btn" onclick="copyCode(this)"><i class="fas fa-copy"></i></button></div>
+      <pre><code>
+        <span class="hl-keyword">package</span> com.ravi.supplier;
+        <span class="hl-keyword">import</span> java.util.Random;
+        <span class="hl-keyword">import</span> java.util.function.Supplier;
+        
+        <span class="hl-keyword">public</span> <span class="hl-keyword">class</span> <span class="hl-type">PasswordGenerator</span> {
+            <span class="hl-keyword">public</span> <span class="hl-keyword">static</span> <span class="hl-keyword">void</span> <span class="hl-method">main</span>(String[] args) {
+                String upper = <span class="hl-string">"ABCDEFGHIJKLMNOPQRSTUVWXYZ"</span>; <span class="hl-comment">//26</span>
+                String lower = <span class="hl-string">"abcdefghijklmnopqrstuvwxyz"</span>; <span class="hl-comment">//26</span>
+                String digit = <span class="hl-string">"0123456789"</span>;                 <span class="hl-comment">//10</span>
+                String special = <span class="hl-string">"!@#$%^&amp;"</span>;                <span class="hl-comment">//7</span>
+                String totalChar = upper + lower + digit + special; <span class="hl-comment">//69 characters</span>
+                
+                <span class="hl-type">Supplier&lt;String&gt;</span> pwdGen = () -&gt; {
+                    String pwd = <span class="hl-string">""</span>;
+                    <span class="hl-type">Random</span> r1 = <span class="hl-keyword">new</span> <span class="hl-type">Random</span>();
+                    <span class="hl-keyword">for</span>(<span class="hl-type">int</span> i=<span class="hl-number">1</span>; i&lt;=<span class="hl-number">8</span>; i++) {
+                        <span class="hl-type">int</span> index = r1.<span class="hl-method">nextInt</span>(totalChar.<span class="hl-method">length</span>());
+                        pwd = pwd + totalChar.<span class="hl-method">charAt</span>(index);
+                    }
+                    <span class="hl-keyword">return</span> pwd;
+                };
+                <span class="hl-type">IO</span>.println(<span class="hl-string">"Generated Password is :"</span>+pwdGen.<span class="hl-method">get</span>());
+            }
+        }
+      </code></pre>
+    </div>
+  `
+  },
+
+  {
+    id: 'bi-functional-interfaces',
+    title: 'BiPredicate, BiConsumer, BiFunction, UnaryOperator, BinaryOperator',
+    icon: 'fas fa-random',
+    category: 'Functional Interfaces',
+    content: `
+    <h2>Can we create our own user-defined functional interface with different type parameter?</h2>
+    <p>Yes, We can create our own custom user-defined functional interface with different type parameter.</p>
+    <div class="code-block">
+      <div class="code-header"><span class="code-filename">CustomFunctionalInterface.java</span><button class="copy-btn" onclick="copyCode(this)"><i class="fas fa-copy"></i></button></div>
+      <pre><code>
+        <span class="hl-keyword">package</span> com.ravi.lambda;
+        
+        <span class="hl-keyword">interface</span> <span class="hl-type">TriFunction&lt;T,U,V,R&gt;</span> {
+            R <span class="hl-method">myApply</span>(T t, U u, V v);
+        }
+        
+        <span class="hl-keyword">public</span> <span class="hl-keyword">class</span> <span class="hl-type">CustomFunctionalInterface</span> {
+            <span class="hl-keyword">public</span> <span class="hl-keyword">static</span> <span class="hl-keyword">void</span> <span class="hl-method">main</span>(String[] args) {
+                <span class="hl-type">TriFunction&lt;Integer, Integer, Integer, String&gt;</span> fn1 = (x, y, z) -&gt; <span class="hl-string">""</span>+x+y+z;
+                <span class="hl-type">IO</span>.println(fn1.<span class="hl-method">myApply</span>(<span class="hl-number">100</span>, <span class="hl-number">200</span>, <span class="hl-number">3090</span>));
+            }
+        }
+      </code></pre>
+    </div>
+
+    <hr>
+
+    <h2>BiPredicate&lt;T,U&gt; functional interface</h2>
+    <ul>
+      <li>It is a predefined functional interface available in java.util.function sub package.</li>
+      <li>It is a functional interface in Java that represents a predicate (a boolean-valued function) OF TWO ARGUMENTS.</li>
+      <li>The BiPredicate interface has method named test, which takes two parameters and returns a boolean value, basically this BiPredicate is same with the Predicate, instead, it takes 2 arguments for the method test.</li>
+    </ul>
+    <div class="code-block">
+      <div class="code-header"><span class="code-filename">BiPredicate.java</span><button class="copy-btn" onclick="copyCode(this)"><i class="fas fa-copy"></i></button></div>
+      <pre><code>
+        <span class="hl-annotation">@FunctionalInterface</span>
+        <span class="hl-keyword">public</span> <span class="hl-keyword">interface</span> <span class="hl-type">BiPredicate&lt;T, U&gt;</span> {
+            <span class="hl-keyword">boolean</span> <span class="hl-method">test</span>(T t, U u);
+        }
+      </code></pre>
+    </div>
+    <p><strong>Type Parameters:</strong></p>
+    <ul>
+      <li>T - the type of the first argument to the predicate</li>
+      <li>U - the type of the second argument the predicate</li>
+    </ul>
+    <p><strong>Note:</strong> return type is boolean.</p>
+
+    <h3>WAP to find the sum of digits are even or odd</h3>
+    <div class="code-block">
+      <div class="code-header"><span class="code-filename">BiPredicateDemo1.java</span><button class="copy-btn" onclick="copyCode(this)"><i class="fas fa-copy"></i></button></div>
+      <pre><code>
+        <span class="hl-keyword">package</span> com.ravi.bi_predicate;
+        <span class="hl-keyword">import</span> java.util.function.BiPredicate;
+        
+        <span class="hl-keyword">public</span> <span class="hl-keyword">class</span> <span class="hl-type">BiPredicateDemo1</span> {
+            <span class="hl-keyword">public</span> <span class="hl-keyword">static</span> <span class="hl-keyword">void</span> <span class="hl-method">main</span>(String[] args) {
+                <span class="hl-type">BiPredicate&lt;Integer, Integer&gt;</span> b1 = (x, y) -&gt; (x+y) %<span class="hl-number">2</span>==<span class="hl-number">0</span>;
+                <span class="hl-type">IO</span>.println(b1.<span class="hl-method">test</span>(<span class="hl-number">12</span>, <span class="hl-number">13</span>));
+                <span class="hl-type">IO</span>.println(b1.<span class="hl-method">test</span>(<span class="hl-number">12</span>, <span class="hl-number">12</span>));
+            }
+        }
+      </code></pre>
+    </div>
+
+    <h3>Program on BiPredicate: Validate the user with valid user name &amp; password</h3>
+    <div class="code-block">
+      <div class="code-header"><span class="code-filename">BiPredicateDemo2.java</span><button class="copy-btn" onclick="copyCode(this)"><i class="fas fa-copy"></i></button></div>
+      <pre><code>
+        <span class="hl-keyword">package</span> com.ravi.bi_predicate;
+        <span class="hl-keyword">import</span> java.util.function.BiPredicate;
+        
+        <span class="hl-keyword">public</span> <span class="hl-keyword">class</span> <span class="hl-type">BiPredicateDemo2</span> {
+            <span class="hl-keyword">public</span> <span class="hl-keyword">static</span> <span class="hl-keyword">void</span> <span class="hl-method">main</span>(String[] args) {
+                <span class="hl-comment">//Validate the user with valid user name &amp; password</span>
+                <span class="hl-type">BiPredicate&lt;String, String&gt;</span> b2 = (u, p) -&gt; u.<span class="hl-method">equals</span>(<span class="hl-string">"Ravi"</span>) &amp;&amp; p.<span class="hl-method">equals</span>(<span class="hl-string">"12345"</span>);
+                String user = <span class="hl-type">IO</span>.<span class="hl-method">readln</span>(<span class="hl-string">"Enter your username :"</span>);
+                String pass = <span class="hl-type">IO</span>.<span class="hl-method">readln</span>(<span class="hl-string">"Enter your password :"</span>);
+                <span class="hl-keyword">if</span>(b2.<span class="hl-method">test</span>(user, pass)) {
+                    <span class="hl-type">IO</span>.println(<span class="hl-string">"User Authenticated"</span>);
+                }
+                <span class="hl-keyword">else</span> {
+                    <span class="hl-type">System</span>.err.println(<span class="hl-string">"Sorry!!! Wrong user name OR password"</span>);
+                }
+            }
+        }
+      </code></pre>
+    </div>
+
+    <hr>
+
+    <h2>BiConsumer&lt;T, U&gt; functional interface</h2>
+    <ul>
+      <li>It is a predefined functional interface available in java.util.function sub package.</li>
+      <li>It is a functional interface in Java that represents an operation that accepts two input arguments and returns no result.</li>
+      <li>It takes a method named accept, which takes two parameters and performs an action without returning any result.</li>
+    </ul>
+    <div class="code-block">
+      <div class="code-header"><span class="code-filename">BiConsumer.java</span><button class="copy-btn" onclick="copyCode(this)"><i class="fas fa-copy"></i></button></div>
+      <pre><code>
+        <span class="hl-annotation">@FunctionalInterface</span>
+        <span class="hl-keyword">public</span> <span class="hl-keyword">interface</span> <span class="hl-type">BiConsumer&lt;T, U&gt;</span> {
+            <span class="hl-keyword">void</span> <span class="hl-method">accept</span>(T t, U u);
+        }
+      </code></pre>
+    </div>
+
+    <div class="code-block">
+      <div class="code-header"><span class="code-filename">BiConsumerDemo1.java</span><button class="copy-btn" onclick="copyCode(this)"><i class="fas fa-copy"></i></button></div>
+      <pre><code>
+        <span class="hl-keyword">package</span> com.ravi.bi_consumer;
+        <span class="hl-keyword">import</span> java.util.function.BiConsumer;
+        
+        <span class="hl-keyword">record</span> <span class="hl-type">Employee</span>(<span class="hl-type">int</span> id, String name, <span class="hl-type">double</span> salary) { }
+        
+        <span class="hl-keyword">public</span> <span class="hl-keyword">class</span> <span class="hl-type">BiConsumerDemo1</span> {
+            <span class="hl-keyword">public</span> <span class="hl-keyword">static</span> <span class="hl-keyword">void</span> <span class="hl-method">main</span>(String[] args) {
+                <span class="hl-comment">//Salary increment by passing the bonus amount of an Employee</span>
+                <span class="hl-type">BiConsumer&lt;Employee, Double&gt;</span> b1 = (employee, bonus) -&gt; {
+                    <span class="hl-type">double</span> incrementedSalary = employee.<span class="hl-method">salary</span>() + bonus;
+                    <span class="hl-type">IO</span>.println(<span class="hl-string">"Salary with increment is :"</span>+incrementedSalary);
+                };
+                <span class="hl-type">Employee</span> e1 = <span class="hl-keyword">new</span> <span class="hl-type">Employee</span>(<span class="hl-number">101</span>, <span class="hl-string">"Scott"</span>, <span class="hl-number">50000</span>);
+                <span class="hl-type">IO</span>.println(e1);
+                b1.<span class="hl-method">accept</span>(e1, <span class="hl-number">5000D</span>);
+            }
+        }
+      </code></pre>
+    </div>
+
+    <div class="code-block">
+      <div class="code-header"><span class="code-filename">BiConsumerDemo2.java</span><button class="copy-btn" onclick="copyCode(this)"><i class="fas fa-copy"></i></button></div>
+      <pre><code>
+        <span class="hl-keyword">package</span> com.ravi.bi_consumer;
+        <span class="hl-keyword">import</span> java.util.function.BiConsumer;
+        
+        <span class="hl-keyword">record</span> <span class="hl-type">Product</span>(<span class="hl-type">Integer</span> id, String name, <span class="hl-type">Double</span> price) { }
+        
+        <span class="hl-keyword">public</span> <span class="hl-keyword">class</span> <span class="hl-type">BiConsumerDemo2</span> {
+            <span class="hl-keyword">public</span> <span class="hl-keyword">static</span> <span class="hl-keyword">void</span> <span class="hl-method">main</span>(String[] args) {
+                <span class="hl-comment">//add gst amount with given product price and print the total amount</span>
+                <span class="hl-type">BiConsumer&lt;Product, Double&gt;</span> b2 = (product, gst) -&gt; {
+                    <span class="hl-type">IO</span>.println(<span class="hl-string">"Product Data :"</span>+product);
+                    <span class="hl-type">IO</span>.println(<span class="hl-string">"Final price is :"</span>+(product.<span class="hl-method">price</span>()+gst));
+                };
+                <span class="hl-type">Product</span> p1 = <span class="hl-keyword">new</span> <span class="hl-type">Product</span>(<span class="hl-number">1</span>, <span class="hl-string">"Camera"</span>, <span class="hl-number">42000.0</span>);
+                <span class="hl-type">Double</span> gst = <span class="hl-number">2500D</span>;
+                <span class="hl-method">getPrice</span>(p1, gst, b2);
+            }
+            <span class="hl-keyword">public</span> <span class="hl-keyword">static</span> <span class="hl-keyword">void</span> <span class="hl-method">getPrice</span>(<span class="hl-type">Product</span> prod, <span class="hl-type">Double</span> gst, <span class="hl-type">BiConsumer&lt;Product, Double&gt;</span> cons) {
+                cons.<span class="hl-method">accept</span>(prod, gst);
+            }
+        }
+      </code></pre>
+    </div>
+
+    <hr>
+
+    <h2>BiFunction&lt;T, U, R&gt; Functional interface</h2>
+    <ul>
+      <li>It is a predefined functional interface available in java.util.function sub package.</li>
+      <li>It is a functional interface in Java that represents a function that accepts two arguments and produces a result R.</li>
+      <li>The BiFunction interface has a method named apply that takes two arguments and returns a result of type R.</li>
+    </ul>
+    <div class="code-block">
+      <div class="code-header"><span class="code-filename">BiFunction.java</span><button class="copy-btn" onclick="copyCode(this)"><i class="fas fa-copy"></i></button></div>
+      <pre><code>
+        <span class="hl-annotation">@FunctionalInterface</span>
+        <span class="hl-keyword">public</span> <span class="hl-keyword">interface</span> <span class="hl-type">BiFunction&lt;T, U, R&gt;</span> {
+            R <span class="hl-method">apply</span>(T t, U u);
+        }
+      </code></pre>
+    </div>
+
+    <div class="code-block">
+      <div class="code-header"><span class="code-filename">BiFunctionDemo1.java</span><button class="copy-btn" onclick="copyCode(this)"><i class="fas fa-copy"></i></button></div>
+      <pre><code>
+        <span class="hl-keyword">package</span> com.ravi.bi_function;
+        <span class="hl-keyword">import</span> java.util.function.BiFunction;
+        
+        <span class="hl-keyword">record</span> <span class="hl-type">Employee</span>(<span class="hl-type">Integer</span> id, String name, <span class="hl-type">Double</span> salary) { }
+        
+        <span class="hl-keyword">public</span> <span class="hl-keyword">class</span> <span class="hl-type">BiFunctionDemo1</span> {
+            <span class="hl-keyword">public</span> <span class="hl-keyword">static</span> <span class="hl-keyword">void</span> <span class="hl-method">main</span>(String[] args) {
+                <span class="hl-comment">//Take Employee &amp; Bonus as an input and return the total amount</span>
+                <span class="hl-type">BiFunction&lt;Employee, Double, Double&gt;</span> fn1 = (employee, bonus) -&gt; {
+                    <span class="hl-type">double</span> updatedSalary = employee.<span class="hl-method">salary</span>() + bonus;
+                    <span class="hl-keyword">return</span> updatedSalary;
+                };
+                <span class="hl-type">Employee</span> emp = <span class="hl-keyword">new</span> <span class="hl-type">Employee</span>(<span class="hl-number">101</span>, <span class="hl-string">"Scott"</span>, <span class="hl-number">50000D</span>);
+                <span class="hl-type">IO</span>.println(emp);
+                <span class="hl-type">Double</span> bonus = <span class="hl-type">Double</span>.<span class="hl-method">valueOf</span>(<span class="hl-type">IO</span>.<span class="hl-method">readln</span>(<span class="hl-string">"Enter the bonus amount :"</span>));
+                <span class="hl-type">IO</span>.println(<span class="hl-string">"Updated Salary is :"</span>+fn1.<span class="hl-method">apply</span>(emp, bonus));
+            }
+        }
+      </code></pre>
+    </div>
+
+    <hr>
+
+    <h2>UnaryOperator&lt;T&gt;</h2>
+    <ul>
+      <li>It is a predefined functional interface available in java.util.function sub package.</li>
+      <li>It is a functional interface in Java that represents an operation on a single operand that produces a result OF SAME TYPE AS ITS OPERAND. This is a specialization of Function for the case where the operand and result are of the SAME type.</li>
+      <li>It has a single type parameter, T, which represents both the operand type and the result type.</li>
+    </ul>
+    <div class="code-block">
+      <div class="code-header"><span class="code-filename">UnaryOperator.java</span><button class="copy-btn" onclick="copyCode(this)"><i class="fas fa-copy"></i></button></div>
+      <pre><code>
+        <span class="hl-annotation">@FunctionalInterface</span>
+        <span class="hl-keyword">public</span> <span class="hl-keyword">interface</span> <span class="hl-type">UnaryOperator&lt;T&gt;</span> <span class="hl-keyword">extends</span> <span class="hl-type">Function&lt;T,T&gt;</span> {
+            <span class="hl-keyword">public</span> <span class="hl-keyword">abstract</span> T <span class="hl-method">apply</span>(T x);  <span class="hl-comment">//Input and Result both are same type</span>
+        }
+      </code></pre>
+    </div>
+
+    <div class="code-block">
+      <div class="code-header"><span class="code-filename">UnaryOperatorDemo1.java</span><button class="copy-btn" onclick="copyCode(this)"><i class="fas fa-copy"></i></button></div>
+      <pre><code>
+        <span class="hl-keyword">package</span> com.ravi.unary_and_binary;
+        <span class="hl-keyword">import</span> java.util.function.UnaryOperator;
+        
+        <span class="hl-keyword">public</span> <span class="hl-keyword">class</span> <span class="hl-type">UnaryOperatorDemo1</span> {
+            <span class="hl-keyword">public</span> <span class="hl-keyword">static</span> <span class="hl-keyword">void</span> <span class="hl-method">main</span>(String[] args) {
+                <span class="hl-type">UnaryOperator&lt;String&gt;</span> convertToUpper = name -&gt; name.<span class="hl-method">toUpperCase</span>();
+                <span class="hl-type">IO</span>.println(convertToUpper.<span class="hl-method">apply</span>(<span class="hl-string">"scott"</span>));
+                
+                <span class="hl-type">UnaryOperator&lt;Integer&gt;</span> findCube = num -&gt; num*num*num;
+                <span class="hl-type">IO</span>.println(findCube.<span class="hl-method">apply</span>(<span class="hl-number">5</span>));
+            }
+        }
+      </code></pre>
+    </div>
+
+    <hr>
+
+    <h2>BinaryOperator&lt;T&gt;</h2>
+    <ul>
+      <li>It is a predefined functional interface available in java.util.function sub package.</li>
+      <li>It is a functional interface in Java that represents an operation upon two operands of the SAME TYPE, producing a result of the SAME type as the operands. [All three(two inputs and one result) must be of same type]</li>
+      <li>This is a specialization of BiFunction&lt;T,T,T&gt; for the case where the operands and the result are all of the same type. It has two parameters of same type, T, which represents both the operand types and the result type.</li>
+    </ul>
+    <div class="code-block">
+      <div class="code-header"><span class="code-filename">BinaryOperator.java</span><button class="copy-btn" onclick="copyCode(this)"><i class="fas fa-copy"></i></button></div>
+      <pre><code>
+        <span class="hl-annotation">@FunctionalInterface</span>
+        <span class="hl-keyword">public</span> <span class="hl-keyword">interface</span> <span class="hl-type">BinaryOperator&lt;T&gt;</span> <span class="hl-keyword">extends</span> <span class="hl-type">BiFunction&lt;T,T,T&gt;</span> {
+            <span class="hl-keyword">public</span> <span class="hl-keyword">abstract</span> T <span class="hl-method">apply</span>(T x, T y);
+        }
+      </code></pre>
+    </div>
+
+    <div class="code-block">
+      <div class="code-header"><span class="code-filename">BinaryOperatorDemo1.java</span><button class="copy-btn" onclick="copyCode(this)"><i class="fas fa-copy"></i></button></div>
+      <pre><code>
+        <span class="hl-keyword">package</span> com.ravi.unary_and_binary;
+        <span class="hl-keyword">import</span> java.util.function.BinaryOperator;
+        
+        <span class="hl-keyword">public</span> <span class="hl-keyword">class</span> <span class="hl-type">BinaryOperatorDemo1</span> {
+            <span class="hl-keyword">public</span> <span class="hl-keyword">static</span> <span class="hl-keyword">void</span> <span class="hl-method">main</span>(String[] args) {
+                <span class="hl-type">BinaryOperator&lt;Double&gt;</span> addAmount = (amt1, amt2) -&gt; amt1 + amt2;
+                <span class="hl-type">double</span> total = addAmount.<span class="hl-method">apply</span>(<span class="hl-number">5000.0</span>, <span class="hl-number">3000.0</span>);
+                <span class="hl-type">IO</span>.println(<span class="hl-string">"Total Amount: "</span> + total);
+                
+                <span class="hl-type">BinaryOperator&lt;String&gt;</span> concat = (str1, str2) -&gt; str1 + str2;
+                <span class="hl-type">IO</span>.println(concat.<span class="hl-method">apply</span>(<span class="hl-string">"Java"</span>, <span class="hl-string">"Technology"</span>));
+            }
+        }
+      </code></pre>
+    </div>
+
+    <hr>
+
+    <h2>Complete information of Functional Interface method</h2>
+    <div class="table-responsive">
+      <table>
+        <tr><th>Interface</th><th>Method</th></tr>
+        <tr><td>1) Predicate&lt;T&gt;</td><td>boolean test(T x)</td></tr>
+        <tr><td>2) Consumer&lt;T&gt;</td><td>void accept(T x)</td></tr>
+        <tr><td>3) Function&lt;T,R&gt;</td><td>R apply(T x)</td></tr>
+        <tr><td>4) Supplier&lt;T&gt;</td><td>T get()</td></tr>
+        <tr><td>5) BiPredicate&lt;T,U&gt;</td><td>boolean test(T x, U y)</td></tr>
+        <tr><td>6) BiConsumer&lt;T,U&gt;</td><td>void accept(T x, U y)</td></tr>
+        <tr><td>7) BiFunction&lt;T,U,R&gt;</td><td>R apply(T x, U y)</td></tr>
+        <tr><td>8) UnaryOperator&lt;T&gt;</td><td>T apply(T x)</td></tr>
+        <tr><td>9) BinaryOperator&lt;T&gt;</td><td>T apply(T x, T y)</td></tr>
+      </table>
+    </div>
+
+    <hr>
+
+    <h2>Does an interface extends a class?</h2>
+    <p>No, an interface can't extend a class, An interface can extend another interface.</p>
+    <p>In order to support upcasting concept in java, all the public (not protected) and non final methods of Object class are re-declared inside an interface as an abstract method by java compiler if that interface does not extend from another interface.</p>
+    <div class="code-block">
+      <div class="code-header"><span class="code-filename">InterfaceMemberDemo1.java</span><button class="copy-btn" onclick="copyCode(this)"><i class="fas fa-copy"></i></button></div>
+      <pre><code>
+        <span class="hl-keyword">package</span> com.ravi.interface_members;
+        
+        <span class="hl-keyword">abstract interface</span> <span class="hl-type">Flyable</span> {
+            <span class="hl-comment">/*public String toString();
+            * public int hashCode();
+            * public boolean equals(Object obj);
+            * added by java compiler as an abstract method */</span>
+        }
+        
+        <span class="hl-keyword">interface</span> <span class="hl-type">AB</span> <span class="hl-keyword">extends</span> <span class="hl-type">Flyable</span> { }
+        
+        <span class="hl-keyword">class</span> <span class="hl-type">Bird</span> <span class="hl-keyword">implements</span> <span class="hl-type">Flyable</span> {
+            <span class="hl-keyword">public</span> String <span class="hl-method">toString</span>() {
+                <span class="hl-keyword">return</span> <span class="hl-string">"Bird"</span>;
+            }
+        }
+        
+        <span class="hl-keyword">public</span> <span class="hl-keyword">class</span> <span class="hl-type">InterfaceMemberDemo1</span> {
+            <span class="hl-keyword">public</span> <span class="hl-keyword">static</span> <span class="hl-keyword">void</span> <span class="hl-method">main</span>(String[] args) {
+                <span class="hl-comment">/*Flyable f = null;
+                f.toString();
+                f.hashCode();
+                f.equals(null);*/</span>
+                
+                <span class="hl-type">Flyable</span> f1 = <span class="hl-keyword">new</span> <span class="hl-type">Bird</span>();
+                <span class="hl-type">IO</span>.println(f1.<span class="hl-method">toString</span>());
+                <span class="hl-type">IO</span>.println(f1.<span class="hl-method">hashCode</span>());
+                <span class="hl-type">IO</span>.println(f1.<span class="hl-method">equals</span>(<span class="hl-keyword">null</span>));
+            }
+        }
+      </code></pre>
+    </div>
+
+    <div class="code-block">
+      <div class="code-header"><span class="code-filename">InterfaceMemberDemo2.java</span><button class="copy-btn" onclick="copyCode(this)"><i class="fas fa-copy"></i></button></div>
+      <pre><code>
+        <span class="hl-keyword">package</span> com.ravi.interface_members;
+        
+        <span class="hl-annotation">@FunctionalInterface</span>
+        <span class="hl-keyword">interface</span> <span class="hl-type">Callable</span> {
+            <span class="hl-keyword">void</span> <span class="hl-method">call</span>();
+            <span class="hl-keyword">public</span> String <span class="hl-method">toString</span>();
+            <span class="hl-keyword">public</span> <span class="hl-keyword">boolean</span> <span class="hl-method">equals</span>(Object obj);
+            <span class="hl-keyword">public</span> <span class="hl-type">int</span> <span class="hl-method">hashCode</span>();
+        }
+        
+        <span class="hl-keyword">public</span> <span class="hl-keyword">class</span> <span class="hl-type">InterfaceMemberDemo2</span> {
+            <span class="hl-keyword">public</span> <span class="hl-keyword">static</span> <span class="hl-keyword">void</span> <span class="hl-method">main</span>(String[] args) {
+                <span class="hl-comment">// code</span>
+            }
+        }
+      </code></pre>
+    </div>
+
+    <div class="code-block">
+      <div class="code-header"><span class="code-filename">InterfaceMemberDemo3.java</span><button class="copy-btn" onclick="copyCode(this)"><i class="fas fa-copy"></i></button></div>
+      <pre><code>
+        <span class="hl-keyword">package</span> com.ravi.interface_members;
+        
+        <span class="hl-keyword">interface</span> <span class="hl-type">A</span> {
+            <span class="hl-keyword">public</span> String <span class="hl-method">toString</span>();
+        }
+        
+        <span class="hl-keyword">class</span> <span class="hl-type">B</span> <span class="hl-keyword">implements</span> <span class="hl-type">A</span> {
+            <span class="hl-comment">//toString() method implementation</span>
+        }
+        
+        <span class="hl-keyword">public</span> <span class="hl-keyword">class</span> <span class="hl-type">InterfaceMemberDemo3</span> {
+            <span class="hl-keyword">public</span> <span class="hl-keyword">static</span> <span class="hl-keyword">void</span> <span class="hl-method">main</span>(String[] args) {
+                <span class="hl-comment">// code</span>
+            }
+        }
+      </code></pre>
+    </div>
+
+    <h3>Can a default method of interface override/write the public method of Object class with same signature and return type?</h3>
+    <p>No, a default method of an interface can't override/write the public method of Object class due to the following two reasons:</p>
+    <ol>
+      <li>1) <strong>Ambiguity issue:</strong> Object class already contain the method which interface wants to define as a default method hence it will provide Ambiguity to sub class (Implementer class)</li>
+      <li>2) <strong>Priority:</strong> Concrete method is having more priority than default method that means Object class method is having more priority than default method of interface so compiler will not allow to write any default method as a public method of Object class.</li>
+    </ol>
+    <div class="code-block">
+      <div class="code-header"><span class="code-filename">InterfaceDemo.java</span><button class="copy-btn" onclick="copyCode(this)"><i class="fas fa-copy"></i></button></div>
+      <pre><code>
+        <span class="hl-keyword">package</span> com.ravi.interface_demo;
+        
+        <span class="hl-keyword">interface</span> <span class="hl-type">Moveable</span> {
+            <span class="hl-keyword">default</span> String <span class="hl-method">toString</span>() <span class="hl-comment">//error</span>
+            {
+                <span class="hl-keyword">return</span> <span class="hl-string">"Java"</span>;
+            }
+        }
+        
+        <span class="hl-keyword">class</span> <span class="hl-type">Car</span> <span class="hl-keyword">implements</span> <span class="hl-type">Moveable</span> { }
+        
+        <span class="hl-keyword">public</span> <span class="hl-keyword">interface</span> <span class="hl-type">Main</span> {
+            <span class="hl-keyword">public</span> <span class="hl-keyword">static</span> <span class="hl-keyword">void</span> <span class="hl-method">main</span>(String[] args) {
+                <span class="hl-comment">// is available from Object class</span>
+            }
+        }
+      </code></pre>
+    </div>
+  `
+  },
+
   // ================================================================
   // OBJECT CLASS METHODS
   // ================================================================
