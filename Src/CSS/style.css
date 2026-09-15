@@ -2111,3 +2111,119 @@ li code {
 .sidebar-nav .topic-item.locked .topic-status { color: var(--secondary-color); opacity: 1; }
 .sidebar-nav .topic-item.locked .topic-icon,
 .sidebar-nav .topic-item.locked .topic-name { filter: blur(3px); user-select: none; }
+
+
+/* ============================================
+   CODE RUNNER STYLES
+   ============================================ */
+
+/* Code actions container */
+.code-actions {
+    display: flex;
+    gap: 6px;
+    margin-left: auto;
+}
+
+/* Run button */
+.run-btn {
+    background: transparent;
+    border: none;
+    color: #a6e3a1;
+    cursor: pointer;
+    font-size: 0.9rem;
+    padding: 5px 8px;
+    border-radius: 5px;
+    transition: all 0.2s ease;
+}
+
+.run-btn:hover {
+    background: rgba(166, 227, 161, 0.15);
+    color: #a6e3a1;
+}
+
+.run-btn:disabled {
+    opacity: 0.5;
+    cursor: progress;
+}
+
+/* Output panel */
+.code-output {
+    display: block;
+    margin: 0;
+    padding: 15px;
+    background: #11111b;
+    color: #a6e3a1;
+    border-top: 1px solid #313244;
+    font-family: 'Fira Code', 'Courier New', monospace;
+    font-size: 0.85rem;
+    line-height: 1.5;
+    white-space: pre-wrap;
+    max-height: 400px;
+    overflow-y: auto;
+}
+
+.code-output.error {
+    color: #f38ba8;
+}
+
+.code-output[hidden] {
+    display: none;
+}
+
+/* Loading state animation */
+.code-output.loading {
+    color: #fab387;
+}
+
+/* ============================================
+   STDIN INPUT UI (for programs that need input)
+   ============================================ */
+.code-stdin-wrapper {
+    padding: 12px 15px;
+    background: #181825;
+    border-top: 1px solid #313244;
+}
+
+.code-stdin-header {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 8px;
+    color: #cdd6f4;
+    font-size: 0.85rem;
+    font-weight: 500;
+}
+
+.code-stdin-header i {
+    color: #89b4fa;
+}
+
+.code-stdin-header small {
+    color: #7f849c;
+    font-size: 0.75rem;
+    margin-left: auto;
+}
+
+.code-stdin {
+    width: 100%;
+    min-height: 70px;
+    padding: 10px 12px;
+    background: #11111b;
+    color: #cdd6f4;
+    border: 1px solid #313244;
+    border-radius: 6px;
+    font-family: 'Fira Code', 'Courier New', monospace;
+    font-size: 0.85rem;
+    line-height: 1.5;
+    resize: vertical;
+    outline: none;
+    transition: border-color 0.2s ease;
+}
+
+.code-stdin:focus {
+    border-color: #89b4fa;
+}
+
+.code-stdin::placeholder {
+    color: #6c7086;
+}

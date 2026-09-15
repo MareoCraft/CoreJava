@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Java Code Runner</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        body {
+            background: #181825;
+            padding: 40px;
+            font-family: system-ui, sans-serif;
+        }
+
+        .code-block {
+            max-width: 820px;
+            margin: 0 auto;
+            border-radius: 10px;
+            overflow: hidden;
+            border: 1px solid #313244;
+            background: #1e1e2e;
+        }
+
+        /* ---------- header ---------- */
+        .code-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: .5rem;
+            padding: .5rem .5rem .5rem .9rem;
+            background: #181825;
+            border-bottom: 1px solid #313244;
+        }
+
+        .code-filename {
+            color: #cdd6f4;
+            font-family: monospace;
+            font-size: .9rem;
+        }
+
+        .code-actions {
+            display: flex;
+            gap: .35rem;
+        }
+
+        .code-actions button {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 32px;
+            height: 32px;
+            border: 0;
+            border-radius: 6px;
+            background: transparent;
+            color: #cdd6f4;
+            cursor: pointer;
+            font-size: .9rem;
+            transition: background .15s, color .15s;
+        }
+
+        .code-actions button:hover {
+            background: rgba(255, 255, 255, .1);
+        }
+
+        .code-actions button:disabled {
+            opacity: .5;
+            cursor: progress;
+        }
+
+        .copy-btn:hover {
+            color: #89b4fa;
+        }
+
+        .run-btn {
+            color: #a6e3a1;
+        }
+
+        .run-btn:hover {
+            background: rgba(166, 227, 161, .15);
+        }
+
+        /* ---------- code ---------- */
+        pre {
+            margin: 0;
+        }
+
+        code {
+            display: block;
+            padding: 1rem;
+            font-family: Consolas, Monaco, monospace;
+            font-size: .88rem;
+            line-height: 1.55;
+            white-space: pre-wrap;
+            color: #cdd6f4;
+        }
+
+        /* ---------- output panel ---------- */
+        .code-output {
+            display: block;
+            margin: 0;
+            padding: 1rem;
+            background: #11111b;
+            color: #a6e3a1;
+            border-top: 1px solid #313244;
+            font-family: Consolas, Monaco, monospace;
+            font-size: .88rem;
+            line-height: 1.55;
+            white-space: pre-wrap;
+        }
+
+        .code-output.error {
+            color: #f38ba8;
+        }
+
+        .code-output[hidden] {
+            display: none;
+        }
+
+        /* fake syntax colours */
+        .hl-keyword {
+            color: #cba6f7;
+        }
+
+        .hl-type {
+            color: #89dceb;
+        }
+
+        .hl-method {
+            color: #89b4fa;
+        }
+
+        .hl-string {
+            color: #a6e3a1;
+        }
+
+        .hl-number {
+            color: #fab387;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="code-block">
+        <div class="code-header">
+            <span class="code-filename">ConsumerDemo1.java</span>
+            <div class="code-actions">
+                <button class="run-btn" title="Run" onclick="runCode(this)"><i class="fas fa-play"></i></button>
+                <button class="copy-btn" title="Copy" onclick="copyCode(this)"><i class="fas fa-copy"></i></button>
+            </div>
+        </div>
+
+        <pre><code>
+        <span class="hl-keyword">package</span> com.ravi.consumer;
+        <span class="hl-keyword">import</span> java.util.function.Consumer;
+
+        <span class="hl-keyword">record</span> <span class="hl-type">Employee</span>(<span class="hl-type">int</span> id, String name, <span class="hl-type">double</span> salary) { }
+
+        <span class="hl-keyword">public</span> <span class="hl-keyword">class</span> <span class="hl-type">ConsumerDemo1</span> {
+            <span class="hl-keyword">public</span> <span class="hl-keyword">static</span> <span class="hl-keyword">void</span> <span class="hl-method">main</span>(String[] args) {
+                <span class="hl-type">Consumer&lt;Integer&gt;</span> c1 = num -&gt; <span class="hl-type">IO</span>.println(<span class="hl-string">"Integer type is :"</span>+num);
+                c1.<span class="hl-method">accept</span>(<span class="hl-number">12</span>);
+
+                <span class="hl-type">Consumer&lt;Employee&gt;</span> c2 = emp -&gt; {
+                    <span class="hl-type">IO</span>.println(<span class="hl-string">"Employee Id is :"</span>+emp.<span class="hl-method">id</span>());
+                    <span class="hl-type">IO</span>.println(<span class="hl-string">"Employee Name is :"</span>+emp.<span class="hl-method">name</span>());
+                    <span class="hl-type">IO</span>.println(<span class="hl-string">"Employee Salary is :"</span>+emp.<span class="hl-method">salary</span>());
+                };
+                c2.<span class="hl-method">accept</span>(<span class="hl-keyword">new</span> <span class="hl-type">Employee</span>(<span class="hl-number">111</span>, <span class="hl-string">"Scott"</span>, <span class="hl-number">800</span>));
+            }
+        }
+  </code></pre>
+
+        <!-- output appears here -->
+        <pre class="code-output" hidden></pre>
+    </div>
+
+    <script>
+        /* =====================================================================
+           1.  COPY BUTTON
+           ===================================================================== */
+        function copyCode(btn) {
+            const block = btn.closest('.code-block');
+            const text = block.querySelector('code').textContent.trim();
+
+            navigator.clipboard.writeText(text).then(() => {
+                const icon = btn.querySelector('i');
+                const old = icon.className;
+                icon.className = 'fas fa-check';
+                setTimeout(() => icon.className = old, 1500);
+            });
+        }
+
+        /* =====================================================================
+           2.  SOURCE PREPARATION
+           ---------------------------------------------------------------------
+           The snippet is a "teaching" snippet, not a standalone file, so we
+           massage it slightly before shipping it to a remote JDK:
+        
+             • drop the  package com.ravi.consumer;  line
+             • IO.println(...)        ->  System.out.println(...)
+             • public class ConsumerDemo1 -> public class Main
+               (most online judges / compilers look for a `Main` entry point)
+        
+           The `record` keyword still needs JDK 16+, which every service below
+           now provides.
+           ===================================================================== */
+        function prepareJavaSource(raw) {
+            return raw
+                /* remove the package declaration */
+                .replace(/^\s*package\s+[\w.]+\s*;\s*$/gm, '')
+                /* IO.println -> System.out.println */
+                .replace(/\bIO\s*\.\s*println\s*\(/g, 'System.out.println(')
+                /* rename the public class to Main */
+                .replace(/\bpublic\s+class\s+\w+/, 'public class Main')
+                .trim();
+        }
+
+        /* strip JVM noise like "Picked up JAVA_TOOL_OPTIONS" / "NOTE: ..." */
+        function cleanJvmNoise(s) {
+            if (!s) return '';
+            return s
+                .split('\n')
+                .filter(l => !/^(Picked up|NOTE:|WARNING:)/.test(l.trim()))
+                .join('\n')
+                .trim();
+        }
+
+        /* small fetch helper with a timeout */
+        function fetchWithTimeout(url, options, ms = 30000) {
+            const ctrl = new AbortController();
+            const t = setTimeout(() => ctrl.abort(), ms);
+            return fetch(url, { ...options, signal: ctrl.signal })
+                .finally(() => clearTimeout(t));
+        }
+
+        /* =====================================================================
+           3.  BACKEND #1 — WANDBOX  (no API key, supports JDK 21 → records OK)
+           ===================================================================== */
+        let wandboxCompilerCache = null;
+
+        async function pickWandboxJavaCompiler() {
+            if (wandboxCompilerCache) return wandboxCompilerCache;
+
+            const res = await fetchWithTimeout('https://wandbox.org/api/list.json', {}, 15000);
+            if (!res.ok) throw new Error('Wandbox list HTTP ' + res.status);
+
+            const list = await res.json();
+
+            const candidates = list
+                .filter(c => /java/i.test(c.language || '') || /^openjdk/i.test(c.name || ''))
+                .map(c => {
+                    const m = /jdk-(\d+)/i.exec(c.name || '');
+                    const major = m ? parseInt(m[1], 10) : (/head/i.test(c.name || '') ? 99 : 0);
+                    return { name: c.name, major };
+                })
+                .filter(c => c.major >= 16)          // records need 16+
+                .sort((a, b) => b.major - a.major);  // newest first
+
+            if (!candidates.length) throw new Error('Wandbox has no Java 16+ compiler');
+
+            wandboxCompilerCache = candidates[0].name;
+            return wandboxCompilerCache;
+        }
+
+        async function runWandbox(source) {
+            const compiler = await pickWandboxJavaCompiler();
+
+            const res = await fetchWithTimeout('https://wandbox.org/api/compile.json', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ compiler, code: source, stdin: '' })
+            });
+
+            if (!res.ok) throw new Error('Wandbox HTTP ' + res.status);
+
+            const data = await res.json();
+
+            const compileErr = cleanJvmNoise(data.compiler_error);
+            if (compileErr) return { error: compileErr };
+
+            const out = [
+                cleanJvmNoise(data.program_output),
+                cleanJvmNoise(data.program_error)
+            ].filter(Boolean).join('\n');
+
+            return { output: out || '(program produced no output)' };
+        }
+
+        /* =====================================================================
+           4.  BACKEND #2 — JUDGE0 CE  (no API key, public instance)
+           ===================================================================== */
+        async function runJudge0(source) {
+            const ids = [91, 62];               // 91 = JDK 17,  62 = JDK 13
+            let lastErr = null;
+
+            for (const language_id of ids) {
+                try {
+                    const res = await fetchWithTimeout(
+                        'https://ce.judge0.com/submissions?wait=true&base64_encoded=false',
+                        {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({ source_code: source, language_id, stdin: '' })
+                        }
+                    );
+                    if (!res.ok) throw new Error('Judge0 HTTP ' + res.status);
+
+                    const data = await res.json();
+
+                    if (data.compile_output && data.compile_output.trim()) {
+                        return { error: cleanJvmNoise(data.compile_output) };
+                    }
+                    const out = [
+                        cleanJvmNoise(data.stdout),
+                        cleanJvmNoise(data.stderr)
+                    ].filter(Boolean).join('\n');
+
+                    return { output: out || '(program produced no output)' };
+                } catch (e) {
+                    lastErr = e;
+                }
+            }
+            throw lastErr || new Error('Judge0 unavailable');
+        }
+
+        /* =====================================================================
+           5.  BACKEND #3 — PISTON  (may need an API key nowadays; kept as last resort)
+           ===================================================================== */
+        async function runPiston(source) {
+            const res = await fetchWithTimeout('https://emkc.org/api/v2/piston/execute', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    language: 'java',
+                    version: '*',
+                    files: [{ name: 'Main.java', content: source }]
+                })
+            });
+
+            if (!res.ok) throw new Error('Piston HTTP ' + res.status);
+
+            const data = await res.json();
+
+            if (data.compile && data.compile.stderr) {
+                return { error: cleanJvmNoise(data.compile.stderr) };
+            }
+            const run = data.run || {};
+            const out = [
+                cleanJvmNoise(run.stdout),
+                cleanJvmNoise(run.stderr)
+            ].filter(Boolean).join('\n');
+
+            return { output: out || '(program produced no output)' };
+        }
+
+        /* =====================================================================
+           6.  RUN WITH FALLBACK CHAIN
+           ===================================================================== */
+        async function runWithFallback(source) {
+            const services = [
+                ['Wandbox', runWandbox],
+                ['Judge0', runJudge0],
+                ['Piston', runPiston]
+            ];
+
+            const failures = [];
+
+            for (const [name, fn] of services) {
+                try {
+                    const result = await fn(source);
+                    if (result && (result.output || result.error)) return result;
+                } catch (e) {
+                    failures.push(`${name}: ${e.message}`);
+                }
+            }
+
+            throw new Error(
+                'Every execution service failed.\n\n' + failures.join('\n') +
+                '\n\nCheck your internet connection, or disable any extension that blocks requests to ' +
+                'wandbox.org / ce.judge0.com / emkc.org.'
+            );
+        }
+
+        /* =====================================================================
+           7.  RUN BUTTON
+           ===================================================================== */
+        async function runCode(btn) {
+            const block = btn.closest('.code-block');
+            const out = block.querySelector('.code-output');
+            const icon = btn.querySelector('i');
+
+            const raw = block.querySelector('code').textContent;
+            const source = prepareJavaSource(raw);
+
+            out.hidden = false;
+            out.classList.remove('error');
+            out.textContent = '⏳ Compiling and running on a remote JDK…';
+
+            btn.disabled = true;
+            icon.className = 'fas fa-spinner fa-spin';
+
+            try {
+                const result = await runWithFallback(source);
+                if (result.error) {
+                    out.classList.add('error');
+                    out.textContent = result.error;
+                } else {
+                    out.textContent = result.output;
+                }
+            } catch (err) {
+                out.classList.add('error');
+                out.textContent = '⚠ ' + err.message;
+            } finally {
+                btn.disabled = false;
+                icon.className = 'fas fa-play';
+            }
+        }
+    </script>
+</body>
+
+</html>

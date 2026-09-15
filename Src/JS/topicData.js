@@ -4152,7 +4152,7 @@ const topicsData = [
     id: 'functional-interfaces',
     title: 'Functional Interfaces',
     icon: 'fas fa-bolt',
-    category: 'Java 8 Features',
+    category: 'Functional Interfaces',
     content: `
       <h2>Functional Interfaces</h2>
       <p>An interface with exactly one abstract method (SAM - Single Abstract Method).</p>
@@ -4182,13 +4182,19 @@ const topicsData = [
     id: 'lambda-expressions',
     title: 'Lambda Expressions',
     icon: 'fas fa-code-branch',
-    category: 'Java 8 Features',
+    category: 'Functional Interfaces',
     content: `
       <h2>Lambda Expressions</h2>
       <p>A lambda expression is an anonymous function (no name, no return type, no modifiers).</p>
       <p>Syntax: <code>(parameters) -&gt; expression</code> or <code>(parameters) -&gt; { statements; }</code></p>
       <div class="code-block">
-        <div class="code-header"><span class="code-filename">LambdaDemo.java</span><button class="copy-btn" onclick="copyCode(this)"><i class="fas fa-copy"></i></button></div>
+        <div class="code-header">
+          <span class="code-filename">LambdaDemo.java</span>
+          <button class="copy-btn" onclick="copyCode(this)"><i class="fas fa-copy"></i></button>
+          <button class="run-btn" onclick="runCode(this)" title="Run Code">
+            <i class="fas fa-play"></i>
+          </button>
+        </div>
         <pre><code>
           <span class="hl-type">Runnable</span> r = () -&gt; <span class="hl-type">System</span>.out.println(<span class="hl-string">"Hello"</span>);
           <span class="hl-type">Predicate</span>&lt;Integer&gt; isEven = n -&gt; n % <span class="hl-number">2</span> == <span class="hl-number">0</span>;
@@ -4205,6 +4211,8 @@ const topicsData = [
         <pre><code>
           <span class="hl-type">Function</span>&lt;String,Integer&gt; f = Integer::<span class="hl-method">parseInt</span>;
         </code></pre>
+
+        <pre class="code-output" hidden></pre>
       </div>
     `
   },
