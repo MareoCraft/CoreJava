@@ -1501,6 +1501,9 @@ li code {
         z-index: 1;
     }
 
+    .topic-header h1 {
+        font-size: 1.1rem;
+    }
 
     .install-app-button {
         padding: 8px;
@@ -2127,13 +2130,14 @@ li code {
 /* Run button */
 .run-btn {
     background: transparent;
-    border: none;
+    border: 1px solid #a6e3a1;
     color: #a6e3a1;
     cursor: pointer;
     font-size: 0.9rem;
     padding: 5px 8px;
     border-radius: 5px;
     transition: all 0.2s ease;
+    background-color: #7ff17526;
 }
 
 .run-btn:hover {
@@ -2176,37 +2180,20 @@ li code {
 }
 
 /* ============================================
-   STDIN INPUT UI (for programs that need input)
+   STDIN INPUT UI — with inline Run button
    ============================================ */
 .code-stdin-wrapper {
     padding: 12px 15px;
     background: #181825;
     border-top: 1px solid #313244;
-}
-
-.code-stdin-header {
     display: flex;
-    align-items: center;
-    gap: 8px;
-    margin-bottom: 8px;
-    color: #cdd6f4;
-    font-size: 0.85rem;
-    font-weight: 500;
-}
-
-.code-stdin-header i {
-    color: #89b4fa;
-}
-
-.code-stdin-header small {
-    color: #7f849c;
-    font-size: 0.75rem;
-    margin-left: auto;
+    flex-direction: column;
+    gap: 10px;
 }
 
 .code-stdin {
     width: 100%;
-    min-height: 70px;
+    min-height: 80px;
     padding: 10px 12px;
     background: #11111b;
     color: #cdd6f4;
@@ -2217,7 +2204,7 @@ li code {
     line-height: 1.5;
     resize: vertical;
     outline: none;
-    transition: border-color 0.2s ease;
+    box-sizing: border-box;
 }
 
 .code-stdin:focus {
@@ -2226,4 +2213,52 @@ li code {
 
 .code-stdin::placeholder {
     color: #6c7086;
+}
+
+/* Inline Run button below textarea */
+.code-stdin-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 8px;
+}
+
+.run-btn-inline {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 20px;
+    background: #a6e3a1;
+    color: #11111b;
+    border: none;
+    border-radius: 6px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.run-btn-inline:hover {
+    background: #94d3a2;
+    transform: translateY(-1px);
+}
+
+.run-btn-inline:active {
+    transform: translateY(0);
+}
+
+.run-btn-inline:disabled {
+    opacity: 0.5;
+    cursor: progress;
+    transform: none;
+}
+
+.run-btn-inline i {
+    font-size: 0.8rem;
+}
+
+.code-filename {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    max-width: 60%;
 }

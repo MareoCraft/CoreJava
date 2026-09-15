@@ -4733,7 +4733,7 @@ const topicsData = [
 
   {
     id: 'bi-functional-interfaces',
-    title: 'BiPredicate, BiConsumer, BiFunction, UnaryOperator, BinaryOperator',
+    title: 'Other Functional Interfaces',
     icon: 'fas fa-random',
     category: 'Functional Interfaces',
     content: `
@@ -7419,20 +7419,18 @@ const topicsData = [
                 <span class="hl-type">IO</span>.println(<span class="hl-string">"OTP Verified"</span>);
             }
         }
-        <span class="hl-keyword">public</span> <span class="hl-keyword">class</span> <span class="hl-type">JoinDemo4</span> {
-            <span class="hl-keyword">public</span> <span class="hl-keyword">static</span> <span class="hl-keyword">void</span> <span class="hl-method">main</span>(String[] args) <span class="hl-keyword">throws</span> <span class="hl-type">InterruptedException</span> {
-                <span class="hl-type">IO</span>.println(<span class="hl-string">"Amount transfer process initiated...."</span>);
-                <span class="hl-type">BalanceCheck</span> bal = <span class="hl-keyword">new</span> <span class="hl-type">BalanceCheck</span>();
-                <span class="hl-type">OTPVerification</span> otp = <span class="hl-keyword">new</span> <span class="hl-type">OTPVerification</span>();
-                bal.<span class="hl-method">start</span>();
-                otp.<span class="hl-method">start</span>();
-                otp.<span class="hl-method">join</span>();
-                bal.<span class="hl-method">join</span>();
-                <span class="hl-comment">//Main thread cannot transfer the amount without OTP verification &amp; Balance check</span>
-                <span class="hl-type">IO</span>.println(<span class="hl-string">"Amount transfer successfully"</span>);
-            }
+        <span class="hl-keyword">public</span> <span class="hl-keyword">static</span> <span class="hl-keyword">void</span> <span class="hl-method">main</span>(String[] args) <span class="hl-keyword">throws</span> <span class="hl-type">InterruptedException</span> {
+            <span class="hl-type">IO</span>.println(<span class="hl-string">"Amount transfer process initiated...."</span>);
+            <span class="hl-type">BalanceCheck</span> bal = <span class="hl-keyword">new</span> <span class="hl-type">BalanceCheck</span>();
+            <span class="hl-type">OTPVerification</span> otp = <span class="hl-keyword">new</span> <span class="hl-type">OTPVerification</span>();
+            bal.<span class="hl-method">start</span>();
+            otp.<span class="hl-method">start</span>();
+            otp.<span class="hl-method">join</span>();
+            bal.<span class="hl-method">join</span>();
+            <span class="hl-comment">//Main thread cannot transfer the amount without OTP verification &amp; Balance check</span>
+            <span class="hl-type">IO</span>.println(<span class="hl-string">"Amount transfer successfully"</span>);  
         }
-      </code></pre>
+      </code></pre>   
     </div>
   `
   }

@@ -178,6 +178,7 @@ function renderTopic(topic) {
 
     cleanCodeBlocks();
     enhanceCodeBlocks();
+    shortenFilenames();
 }
 
 function updateProgress() {
@@ -207,13 +208,13 @@ function copyCode(btn) {
 
 function codeNeedsInput(raw) {
     return /\bIO\s*\.\s*readln\s*\(/.test(raw) ||
-           /new\s+Scanner\s*\(/.test(raw) ||
-           /System\.in/.test(raw) ||
-           /\.nextInt\s*\(/.test(raw) ||
-           /\.nextLine\s*\(/.test(raw) ||
-           /\.nextDouble\s*\(/.test(raw) ||
-           /\.next\s*\(/.test(raw) ||
-           /\.readLine\s*\(/.test(raw);
+        /new\s+Scanner\s*\(/.test(raw) ||
+        /System\.in/.test(raw) ||
+        /\.nextInt\s*\(/.test(raw) ||
+        /\.nextLine\s*\(/.test(raw) ||
+        /\.nextDouble\s*\(/.test(raw) ||
+        /\.next\s*\(/.test(raw) ||
+        /\.readLine\s*\(/.test(raw);
 }
 
 /* ---------- CREATE STDIN INPUT UI ---------- */
@@ -257,34 +258,163 @@ function extractPromptsFromCode(raw) {
 }
 
 /* ---------- SOURCE PREPARATION ---------- */
-/* ---------- SOURCE PREPARATION (removes prompts from output) ---------- */
+/* ---------- SPLIT JAVA SOURCE INTO CLASS BLOCKS + LOOSE CODE ---------- */
+function splitJavaCode(source) {
+    const lines = source.split('\n');
+    const classBlocks = [];
+    const looseLines = [];
+
+    let i = 0;
+    while (i < lines.length) {
+        const line = lines[i];
+        const trimmed = line.trim();
+
+        if (!trimmed) { looseLines.push(line); i++; continue; }
+
+        const isClassStart = /^\s*(?:(?:public|private|protected|abstract|final|sealed|non-sealed|static)\s+)*\b(class|interface|enum|record)\s+\w+/.test(line);
+
+        if (isClassStart) {
+            const blockLines = [];
+            let braceDepth = 0;
+            let started = false;
+
+            while (i < lines.length) {
+                const l = lines[i];
+                blockLines.push(l);
+                braceDepth += (l.match(/\{/g) || []).length;
+                braceDepth -= (l.match(/\}/g) || []).length;
+                if (l.includes('{')) started = true;
+                i++;
+                if (started && braceDepth === 0) break;
+            }
+            classBlocks.push(blockLines.join('\n'));
+        } else {
+            looseLines.push(line);
+            i++;
+        }
+    }
+    return { classBlocks, looseCode: looseLines.join('\n').trim() };
+}
+
+/* ---------- WRAP LOOSE CODE IN A MAIN CLASS ---------- */
+function wrapInMainClass(looseCode) {
+    const indented = looseCode.split('\n').map(l => l ? '    ' + l : '').join('\n');
+    return `public class Main {\n${indented}\n}`;
+}
+
+/* ---------- MAKE NON-STATIC METHODS STATIC (only in Main class body) ---------- */
+function makeMainClassMethodsStatic(source) {
+    // Find the Main class block and process methods inside it
+    return source.replace(
+        /(public\s+class\s+Main\s*\{)([\s\S]*)\n\}/g,
+        (match, open, body) => {
+            const newBody = body.replace(
+                /^([ \t]+)((?:public|private|protected)\s+)?(void|boolean|byte|short|int|long|char|float|double|String)\s+(\w+)\s*\(/gm,
+                (m, indent, accessMod, returnType, methodName, offset, full) => {
+                    if (/\bstatic\b/.test(m)) return m;
+                    if (methodName === 'main') return m;
+                    if (/^(if|else|while|for|switch|catch|do|return|new|try)\b/.test(methodName)) return m;
+
+                    // Skip if previous line has @Override
+                    const before = full.substring(0, offset);
+                    const prevLines = before.split('\n').slice(-2).join('\n');
+                    if (/@Override\s*$/.test(prevLines.trim())) return m;
+
+                    return `${indent}${accessMod || ''}static ${returnType} ${methodName}(`;
+                }
+            );
+            return open + newBody + '\n}';
+        }
+    );
+}
+
+/* ---------- SOURCE PREPARATION (multi-class aware + hoists imports) ---------- */
 function prepareJavaSource(raw) {
     let source = raw
         .replace(/^\s*package\s+[\w.]+\s*;\s*$/gm, '')
-        .replace(/\bpublic\s+class\s+\w+/, 'public class Main')
         .trim();
 
-    // ✅ STEP 1: Remove prompt-style print statements
-    //    Anything that ends with ":" or "?" is treated as a prompt
-    //    and stripped out so it doesn't appear in the output.
+    // ✅ STEP 0: Extract all import statements and hoist them to top
+    const importLines = [];
+    source = source.replace(/^\s*import\s+[\w.*]+\s*;\s*$/gm, (match) => {
+        importLines.push(match.trim());
+        return '';  // remove from original position
+    });
+
+    // Clean up empty lines left by import removal
+    source = source.replace(/\n{3,}/g, '\n\n').trim();
+
+    // Strip prompt-style prints
     source = source.replace(
         /(?:IO|System\s*\.\s*out)\s*\.\s*print(?:ln)?\s*\(\s*"([^"]*[:?])\s*"\s*\)\s*;/g,
         ''
     );
 
-    // ✅ STEP 2: Handle IO.readln → __readLine() (no prompt shown)
+    // IO.readln → __readLine()
     const usesIOReadln = /\bIO\s*\.\s*readln\s*\(/.test(source);
     if (usesIOReadln) {
         source = source.replace(/\bIO\s*\.\s*readln\s*\(\s*"[^"]*"\s*\)/g, '__readLine()');
         source = source.replace(/\bIO\s*\.\s*readln\s*\(\s*\)/g, '__readLine()');
     }
 
-    // ✅ STEP 3: Replace remaining IO.xxx with System.out.xxx
+    // IO.println / IO.print
     source = source
         .replace(/\bIO\s*\.\s*println\s*\(/g, 'System.out.println(')
         .replace(/\bIO\s*\.\s*print\s*\(/g, 'System.out.print(');
 
-    // ✅ STEP 4: Inject __readLine helper if needed
+    // Split into class blocks + loose code
+    let { classBlocks, looseCode } = splitJavaCode(source);
+
+    // Find class with main
+    let mainClassIdx = -1;
+    for (let i = 0; i < classBlocks.length; i++) {
+        if (/\bvoid\s+main\s*\(/.test(classBlocks[i])) { mainClassIdx = i; break; }
+    }
+
+    let finalSource;
+
+    if (mainClassIdx >= 0) {
+        const mainBlock = classBlocks[mainClassIdx];
+        const nameMatch = mainBlock.match(/\b(?:class|interface|enum|record)\s+(\w+)/);
+        if (nameMatch && nameMatch[1] !== 'Main') {
+            const oldName = nameMatch[1];
+            const renamed = mainBlock.replace(
+                new RegExp(`\\b${oldName}\\b`, 'g'), 'Main'
+            );
+            classBlocks[mainClassIdx] = renamed;
+        } else {
+            classBlocks[mainClassIdx] = mainBlock.replace(
+                /\bclass\s+Main\b/, 'public class Main'
+            );
+        }
+        finalSource = classBlocks.join('\n\n');
+
+        if (looseCode) {
+            finalSource += '\n\n' + wrapInMainClass(looseCode);
+        }
+    } else {
+        const classesPart = classBlocks.join('\n\n');
+
+        if (looseCode) {
+            const mainClass = wrapInMainClass(looseCode);
+            finalSource = classesPart ? classesPart + '\n\n' + mainClass : mainClass;
+        } else if (classesPart) {
+            finalSource = wrapInMainClass(classesPart);
+        } else {
+            finalSource = 'public class Main { }';
+        }
+    }
+
+    // Normalize main signature
+    finalSource = finalSource.replace(
+        /(?:\bpublic\s+)?(?:\bstatic\s+)?\bvoid\s+main\s*\(\s*(?:String\s*\[\s*\]\s*\w*)?\s*\)/g,
+        'public static void main(String[] args)'
+    );
+
+    // Make non-static methods in Main class static
+    finalSource = makeMainClassMethodsStatic(finalSource);
+
+    // Inject __readLine helper inside Main class
     if (usesIOReadln) {
         const helper = `
     private static java.io.BufferedReader __reader = new java.io.BufferedReader(new java.io.InputStreamReader(System.in));
@@ -292,10 +422,26 @@ function prepareJavaSource(raw) {
         try { return __reader.readLine(); } catch(Exception e) { return null; }
     }
 `;
-        source = source.replace(/(public\s+class\s+Main\s*\{)/, '$1' + helper);
+        finalSource = finalSource.replace(
+            /(public\s+class\s+Main\s*\{)/,
+            '$1' + helper
+        );
     }
 
-    return source;
+    // Safety net for missing main
+    if (!/public\s+static\s+void\s+main\s*\(\s*String\s*\[\s*\]\s*\w+\s*\)/.test(finalSource)) {
+        finalSource = finalSource.replace(
+            /(public\s+class\s+Main\s*\{)/,
+            '$1\n    public static void main(String[] args) { }\n'
+        );
+    }
+
+    // ✅ FINAL: Prepend all imports at the very top
+    if (importLines.length > 0) {
+        finalSource = importLines.join('\n') + '\n\n' + finalSource;
+    }
+
+    return finalSource;
 }
 
 function cleanJvmNoise(s) {
@@ -413,6 +559,7 @@ async function runWithFallback(source, stdin = '') {
 }
 
 /* ---------- RUN BUTTON HANDLER (minimal input, no prompts) ---------- */
+/* ---------- RUN BUTTON HANDLER ---------- */
 async function runCode(btn) {
     const block = btn.closest('.code-block');
     if (!block) return;
@@ -437,16 +584,36 @@ async function runCode(btn) {
         if (!wrapper) {
             wrapper = document.createElement('div');
             wrapper.className = 'code-stdin-wrapper';
-            wrapper.innerHTML = `<textarea class="code-stdin" placeholder="Enter input (one value per line)" rows="4"></textarea>`;
+            wrapper.innerHTML = `
+                <textarea class="code-stdin" placeholder="Enter input (one value per line)" rows="4"></textarea>
+                <div class="code-stdin-actions">
+                    <button class="run-btn-inline" type="button">
+                        <i class="fas fa-play"></i> Run Code
+                    </button>
+                </div>
+            `;
             if (out) block.insertBefore(wrapper, out);
             else block.appendChild(wrapper);
+
+            // Attach click handler to the inline Run button
+            const inlineRunBtn = wrapper.querySelector('.run-btn-inline');
+            inlineRunBtn.addEventListener('click', function (e) {
+                e.preventDefault();
+                // Use the original header run button for state management
+                const headerRunBtn = block.querySelector('.code-actions .run-btn');
+                if (headerRunBtn) {
+                    headerRunBtn.click();
+                } else {
+                    runCode(this);
+                }
+            });
 
             const ta = wrapper.querySelector('.code-stdin');
             if (ta) ta.focus();
 
             out.hidden = false;
             out.classList.remove('error', 'loading');
-            out.textContent = 'Enter the input above, then click ▶ Run again.';
+            out.textContent = 'Enter the input above, then click Run Code.';
             return;
         }
 
@@ -465,9 +632,12 @@ async function runCode(btn) {
     out.hidden = false;
     out.classList.remove('error');
     out.classList.add('loading');
-    out.textContent = '⏳ Running...';
+    out.textContent = '⏳ Compiling and Executing...';
 
+    // Disable both buttons during run
+    const inlineBtn = block.querySelector('.run-btn-inline');
     btn.disabled = true;
+    if (inlineBtn) inlineBtn.disabled = true;
     icon.className = 'fas fa-spinner fa-spin';
 
     try {
@@ -485,6 +655,7 @@ async function runCode(btn) {
         out.textContent = '⚠ ' + err.message;
     } finally {
         btn.disabled = false;
+        if (inlineBtn) inlineBtn.disabled = false;
         icon.className = 'fas fa-play';
     }
 }
@@ -733,15 +904,12 @@ function enhanceCodeBlocks() {
         const codeEl = block.querySelector('code');
         if (!codeEl) return;
 
-        // Detect if this code block has a main method
         const codeText = codeEl.textContent || '';
         const hasMain = /\b(public\s+)?(static\s+)?void\s+main\s*\(/.test(codeText) ||
                         /\bvoid\s+main\s*\(\s*String\s*\[\s*\]\s*\w*\s*\)/.test(codeText) ||
                         /\bvoid\s+main\s*\(\s*\)/.test(codeText);
 
-        // If already processed, skip
         if (header.querySelector('.code-actions')) {
-            // Ensure output panel exists (only if hasMain)
             if (hasMain && !block.querySelector('.code-output')) {
                 const output = document.createElement('pre');
                 output.className = 'code-output';
@@ -752,17 +920,14 @@ function enhanceCodeBlocks() {
         }
 
         const copyBtn = header.querySelector('.copy-btn');
-
-        // Create actions wrapper
         const actions = document.createElement('div');
         actions.className = 'code-actions';
 
-        // ✅ Only add Run button if code has main method
         if (hasMain) {
             const runBtn = document.createElement('button');
             runBtn.className = 'run-btn';
             runBtn.title = 'Run Code';
-            runBtn.innerHTML = '<i class="fas fa-play"></i>';
+            runBtn.innerHTML = 'Run <i class="fas fa-play"></i>';
             runBtn.onclick = function (e) {
                 e.preventDefault();
                 runCode(this);
@@ -770,7 +935,6 @@ function enhanceCodeBlocks() {
             actions.appendChild(runBtn);
         }
 
-        // Move copy button into actions
         if (copyBtn) {
             copyBtn.parentNode.removeChild(copyBtn);
             actions.appendChild(copyBtn);
@@ -778,7 +942,6 @@ function enhanceCodeBlocks() {
 
         header.appendChild(actions);
 
-        // ✅ Only add output panel if code has main method
         if (hasMain && !block.querySelector('.code-output')) {
             const output = document.createElement('pre');
             output.className = 'code-output';
@@ -804,6 +967,7 @@ function init() {
     updateProgress();
     cleanCodeBlocks();
     enhanceCodeBlocks();
+    shortenFilenames();
     showToast('Sign In With Google To Access All Topics', 'error');
 
     document.getElementById('menu-btn').addEventListener('click', () => toggleSidebar());
@@ -828,6 +992,49 @@ function init() {
         }
     });
 }
+
+/* ---------- SHORTEN FILENAMES ON MOBILE ---------- */
+function shortenFilenames() {
+    const isMobile = window.matchMedia('(max-width: 768px)').matches;
+    const MAX_LENGTH = 30;
+
+    document.querySelectorAll('.code-block .code-filename').forEach(el => {
+        // Store original full name once
+        if (!el.dataset.fullName) {
+            el.dataset.fullName = el.textContent.trim();
+        }
+
+        const fullName = el.dataset.fullName;
+
+        if (isMobile && fullName.length > MAX_LENGTH) {
+            // Split name and extension
+            const dotIndex = fullName.lastIndexOf('.');
+            const name = dotIndex > 0 ? fullName.slice(0, dotIndex) : fullName;
+            const ext  = dotIndex > 0 ? fullName.slice(dotIndex) : '';
+
+            // How many chars we can keep from the name part
+            const keep = Math.max(5, MAX_LENGTH - ext.length - 3); // 3 for "..."
+
+            const shortName = name.length > keep
+                ? name.slice(0, keep) + '...' + ext
+                : fullName;
+
+            el.textContent = shortName;
+            el.title = fullName; // show full name on hover/tap
+        } else {
+            // Restore full name on desktop
+            el.textContent = fullName;
+            el.removeAttribute('title');
+        }
+    });
+}
+
+/* Re-run on resize (desktop ↔ mobile) */
+let __resizeTimer;
+window.addEventListener('resize', () => {
+    clearTimeout(__resizeTimer);
+    __resizeTimer = setTimeout(shortenFilenames, 200);
+});
 
 // ============ GLOBAL FUNCTIONS ============
 window.navigateToTopic = navigateToTopic;
